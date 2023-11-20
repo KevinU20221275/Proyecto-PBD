@@ -125,24 +125,6 @@ img {
     height: auto;
 }
 
-.container-fluid{
-    max-width: 1200px;
-    margin: 0 auto;
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-
-.carousel {
-    width: 100%;
-    max-height: 90vh;
-    overflow: hidden;
-}
-
-.carousel-item{
-    width: 100%;
-    padding: 0;
-}
-
 
 
 /*========== Button Dark/Light ==========*/
@@ -207,16 +189,20 @@ tbody,th,td,tr,input {
 
 .banner {
 	background-image: linear-gradient(100deg, #000000, #00000020),
-		url('img/banner.jpg');
-	height: 60rem;
+		url("../images/banner.jpg");
+	height: 90vh;
 	background-size: cover;
 	background-position: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: start;
 }
 
 .content-banner {
 	max-width: 90rem;
-	margin: 0 auto;
-	padding: 25rem 0;
+	padding: 0 2rem;
 }
 
 .content-banner p {
@@ -228,7 +214,7 @@ tbody,th,td,tr,input {
 
 .content-banner h2 {
 	color: #fff;
-	font-size: 3.5rem;
+	font-size: 3rem;
 	font-weight: 500;
 	line-height: 1.2;
 }
@@ -250,12 +236,16 @@ tbody,th,td,tr,input {
 	flex-direction: column;
 	gap: 2rem;
 	margin-bottom: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .container-categories {
 	display: grid;
-	grid-template-columns: repeat(3, 1fr);
-	gap: 3rem;
+	grid-template-columns: repeat(3,minmax(270px, 1fr));
+	gap: 1.5rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .card-category {
@@ -270,7 +260,7 @@ tbody,th,td,tr,input {
 
 .category-moca {
 	background-image: linear-gradient(#00000080, #00000080),
-		url('images/moca-category.jpg');
+		url('../images/moca-category.jpg');
 	background-size: cover;
 	background-position: bottom;
 	background-repeat: no-repeat;
@@ -278,7 +268,7 @@ tbody,th,td,tr,input {
 
 .category-capuchino {
 	background-image: linear-gradient(#00000080, #00000080),
-		url('images/capuchino-category.jpg');
+		url('../images/capuchino-category.jpg');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -286,7 +276,7 @@ tbody,th,td,tr,input {
 
 .category-expreso {
 	background-image: linear-gradient(#00000080, #00000080),
-		url('images/expreso-category.jpg');
+		url('../images/expreso-category.jpg');
 	background-size: cover;
 	background-position: center;
 	background-repeat: no-repeat;
@@ -325,11 +315,14 @@ tbody,th,td,tr,input {
 	flex-direction: column;
 	gap: 2rem;
 	margin-bottom: 3rem;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .container-options {
 	display: flex;
 	justify-content: center;
+    flex-wrap: wrap;
 	gap: 2rem;
 	margin-bottom: 1rem;
 }
@@ -338,7 +331,7 @@ tbody,th,td,tr,input {
 	color: var(--body-color);
 	background-color: var(--text-color);
 	padding: 0.7rem 3rem;
-	font-size: 1.4rem;
+	font-size: 1.2rem;
 	text-transform: capitalize;
 	border-radius: 2rem;
 	cursor: pointer;
@@ -363,8 +356,8 @@ tbody,th,td,tr,input {
 
 .card-product {
 	background-color: var(--body-color);
-    max-width: 300px;
-	padding: 2rem 3rem;
+    width:100%;
+	padding: 2rem;
 	border-radius: 0.5rem;
 	cursor: pointer;
 	box-shadow: 0 0 2px var(--text-color);
@@ -406,7 +399,10 @@ tbody,th,td,tr,input {
 	justify-items: center;
 	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(4, min-content);
+    gap: 1rem;
 	row-gap: 1rem;
+    max-width: 1200px ;
+    margin: 0 auto;
 }
 
 
@@ -441,6 +437,63 @@ tbody,th,td,tr,input {
 .nav__toggle:hover{
     color: var(--first-color);
 }
+
+
+
+@media screen and (max-width:1024px) {
+    .container-categories {
+        grid-template-columns: repeat(2,minmax(270px, 1fr));
+        gap: 1rem;
+    }
+
+    .card-category {
+        height: 12rem;
+        gap: 2rem;
+    }
+
+    .card-category p {
+        font-size: 1.5rem;
+    }
+
+    .card-category span {
+        font-size: 1.1rem;
+    }
+
+    .container-products {
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(4, min-content);
+        gap: 1rem;
+        row-gap: 1rem;
+    }
+
+}
+
+@media screen and (max-width:557px){
+    .container-categories {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .card-category {
+        width: 18rem;
+    }
+
+    .card-category p {
+        font-size: 1.2rem;
+    }
+
+    .card-product {
+        padding: 1rem .5rem;
+        border-radius: 0.5rem;
+    }
+}
+
+@media screen and (max-width:440px) {
+    .container-product {
+        gap: 0.5rem !important;
+        grid-template-columns: 1fr !important;
+    }
+}
   
 @media screen and (max-width:767px){
     .nav__menu{
@@ -453,6 +506,27 @@ tbody,th,td,tr,input {
       box-shadow: 0 -1px 4px rgba(0,0,0,.15);
       border-radius: 1.5rem 1.5rem 0 0;
       transition: .3s;
+    }
+
+    .heading-1 {
+        font-size: 2rem;
+    }
+
+    .container-options {
+        gap: .3rem;
+        margin-bottom: 1rem;
+    }
+
+    .container-options span {
+        padding: 0.5rem 0.5rem;
+        font-size: 1rem;
+    }
+
+    .container-products {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, min-content);
+        gap: 1rem;
+        row-gap: 1rem;
     }
 }
   
@@ -478,6 +552,23 @@ tbody,th,td,tr,input {
   
 .nav__icon {
     font-size: 1.2rem;
+}
+
+#num_cart {
+    font-size: 1.2rem;
+    background-color: var(--first-color);
+    color: var(--body-color);
+    padding: 0 1rem;
+    border-radius: 15px;
+    height: 100%;
+}
+
+#num_cart > i {
+    margin: auto;
+}
+
+#num_cart:hover {
+    background-color: var(--first-color-alt);
 }
   
 .nav__close {
@@ -609,6 +700,7 @@ tbody,th,td,tr,input {
   /* For medium devices */
   
   @media screen and (min-width: 760px) {
+    
     .contenedor {
       margin-left: auto;
       margin-right: auto;

@@ -16,7 +16,10 @@ if (empty($_POST['NombreProducto']) || empty($_POST['Descripcion'])){
     $id_Categoria = intval($categoria);
     
     $imagen = addslashes(file_get_contents($_FILES['imagen']['tmp_name']));
-    $query= "INSERT INTO `Producto` VALUES (@id,'$nombreProducto','$descripcion','$precio_float','$stock_int' , '$id_Categoria','$imagen')";
+
+    $descuento = $_POST['Descuento'];
+    $descuentoInt = intval($descuento);
+    $query= "INSERT INTO `Producto` VALUES (@id,'$nombreProducto','$descripcion','$precio_float','$stock_int' , '$id_Categoria','$imagen','$descuentoInt')";
     $result = $conexion->query($query);
 
     if ($result) {
@@ -50,6 +53,8 @@ if (empty($_POST['NombreProducto']) || empty($_POST['Descripcion'])){
         <input type="text" name="id_Categoria"><br><br>
         <label for="">Foto: </label>
         <input type="file" name="imagen" require><br><br>
+        <label for="">Descuento: </label>
+        <input type="text" name="Descuento" require><br><br>
         <input type="submit" name="Guardar" value="Guardar">
         <button><a href="index.php">Consultar</a></button>
     </form>

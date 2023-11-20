@@ -54,7 +54,7 @@ $result = mysqli_num_rows($query);
                     </li>
                     <li class="nav__item">
                         <a href="checkout_carrito.php" id="num_cart" class="nav__link">
-                            <i class="uil uil-shopping-cart-alt"> <?php echo $num_cart; ?></i> 
+                            <i class="uil uil-shopping-cart-alt">   <?php echo $num_cart; ?></i> 
                         </a>
                     </li>
                 </ul>
@@ -150,6 +150,11 @@ $result = mysqli_num_rows($query);
             ?>
         </div>
     </div>
+
+    <!--==================== SCROLL TOP ====================-->
+    <a href="#" class="scrollup" id="scroll-up">
+        <i class="uil uil-arrow-up scrollup__icon"></i>
+    </a>
     
 
     <script src="./JS/index.js"></script>

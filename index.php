@@ -15,7 +15,7 @@ $result = mysqli_num_rows($query);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./CSS/style.css">
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"> -->
 
     <!--==================== UNICONS ====================-->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
@@ -53,11 +53,8 @@ $result = mysqli_num_rows($query);
                         </a>
                     </li>
                     <li class="nav__item">
-                        <a href="checkout_carrito.php" class="nav__link">
-                            <i class="uil uil-message nav__icon"></i> Carrito
-                            <span id="num_cart" class="badge bg-secondary">
-                                <?php echo $num_cart; ?>
-                            </span>
+                        <a href="checkout_carrito.php" id="num_cart" class="nav__link">
+                            <i class="uil uil-shopping-cart-alt"> <?php echo $num_cart; ?></i> 
                         </a>
                     </li>
                 </ul>
@@ -73,57 +70,77 @@ $result = mysqli_num_rows($query);
             </div>
         </nav>
     </header>
-    <div class="container-fluid mt-md-5">
-        <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-            <div class="carousel-indicators">
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-              <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-            </div>
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img src="./images/hero-mobil.jpg" class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="./images/hero-tablet.jpeg" class="d-block w-100" alt="...">
-              </div>
-              <div class="carousel-item">
-                <img src="./images/hero.png" class="d-block w-100" alt="...">
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
-    </div>
+    <section class="banner">
+			<div class="content-banner">
+				<p>Café Delicioso</p>
+				<h2>100% Natural <br />Café Fresco</h2>
+				<a href="#">Comprar ahora</a>
+			</div>
+	</section>
+
+    <section class="container top-categories">
+				<h1 class="heading-1">Mejores Categorías</h1>
+				<div class="container-categories">
+					<div class="card-category category-moca">
+						<p>Café moca</p>
+						<span>Ver más</span>
+					</div>
+					<div class="card-category category-expreso">
+						<p>Expreso Americano</p>
+						<span>Ver más</span>
+					</div>
+					<div class="card-category category-capuchino">
+						<p>Capuchino</p>
+						<span>Ver más</span>
+					</div>
+				</div>
+	</section>
+
+    <section class="container top-products">
+				<h1 class="heading-1">Mejores Productos</h1>
+
+				<div class="container-options">
+					<span class="active">Destacados</span>
+					<span>Más recientes</span>
+					<span>Mejores Vendidos</span>
+				</div>
+    </section>
 
 
     <div class="container">
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="container-products">
             <?php
             if ($result > 0){
                 while ($data = mysqli_fetch_array($query)){
                 ?>
-                    <div class="col">
-                        <div class="card shadow-sm">
+                    <div class="card-product">
+                        <div class="container-img">
                             <img src="data:image/jpg;base64, <?php echo base64_encode($data['imagen']) ?>" alt="" class="img-card">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo $data['NombreProducto'] ?></h5>
-                                <p class="card-text">$ <?php echo number_format($data['Precio'],2,'.',',');?></p>
-                                <p><?php echo $data['Descripcion']?></p>
-                                <div class="d-flex flex-column justify-content-between ">
-                                    <div class="btn-group pb-2">
-                                        <a href="detallesProductos.php?id=<?php echo $data['id_producto']; ?>&token=<?php echo
-                                        hash_hmac('sha1', $data['id_producto'], KEY_TOKEN); ?>" class="btn btn-primary">Detalles</a>
-                                    </div>
-                                    <button class="btn btn-outline-success" type="button" onclick="addProducto(<?php echo $data['id_producto'] ?>,
-                                    <?php echo hash_hmac('sha1', $data['id_producto'], KEY_TOKEN) ?>)">Agregar al Carrito</button>
-                                </div>
+                            <?php if($data['Descuento'] > 0) { ?>
+                                <span class="discount">- <?php echo $data['Descuento']; ?>%</span>
+                            <?php } else { ?>
+                                
+                            <?php } ?>
+                        </div>
+                        <div class="content-card-product">
+                            <h3 class="card-title"><?php echo $data['NombreProducto'] ?></h3>
+                            <p><?php echo $data['Descripcion']?></p>
+                            <?php if($data['Descuento'] > 0) { ?>
+                                <p><del>$ <?php echo number_format($data['Precio'],2,'.',',' );?></del></p>
+                                <h2>
+                                    $ <?php echo number_format($precioDescuento = $data['Precio'] - (($data['Precio'] * $data['Descuento']) / 100),2,'.',',' );?>
+                                </h2>
+                            <?php } else { ?>
+                                <span style='padding: 10px;'></span>
+                                <h2>$ <?php echo number_format($data['Precio'],2,'.',',' );?></h2>
+                            <?php } ?>
+                            <div class="btn-group">
+                                    
+                                <a href="detallesProductos.php?id=<?php echo $data['id_producto']; ?>&token=<?php echo
+                                hash_hmac('sha1', $data['id_producto'], KEY_TOKEN); ?>" class="button">Detalles</a>
+                                    
+                                <button class="button--white" type="button" onclick="addProducto(<?php echo $data['id_producto'] ?>,
+                                <?php echo hash_hmac('sha1', $data['id_producto'], KEY_TOKEN) ?>)"><i class="uil uil-shopping-cart-alt button__icon"></i></button>
                             </div>
                         </div>
                     </div>

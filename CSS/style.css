@@ -356,10 +356,9 @@ tbody,th,td,tr,input {
 
 .card-product {
 	background-color: var(--body-color);
-    width:100%;
-	padding: 2rem;
+    width: 240px;
+	padding: 1.5rem 1rem;
 	border-radius: 0.5rem;
-	cursor: pointer;
 	box-shadow: 0 0 2px var(--text-color);
     overflow: hidden;
 }
@@ -374,8 +373,8 @@ tbody,th,td,tr,input {
 
 .container-img .discount {
 	position: absolute;
-    top: -25px;
-	left: -25px;
+    top: -15px;
+	left: -10px;
 	background-color: var(--first-color);
 	color: var(--body-color);
 	padding: 2px 1rem;
@@ -395,14 +394,13 @@ tbody,th,td,tr,input {
 
 
 .container-products {
-	display: grid;
-	justify-items: center;
-	grid-template-columns: repeat(4, 1fr);
-	grid-template-rows: repeat(4, min-content);
-    gap: 1rem;
-	row-gap: 1rem;
-    max-width: 1200px ;
+	display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    max-width: 1200px;
     margin: 0 auto;
+    gap: 10px;
 }
 
 
@@ -459,13 +457,6 @@ tbody,th,td,tr,input {
         font-size: 1.1rem;
     }
 
-    .container-products {
-        grid-template-columns: repeat(3, 1fr);
-        grid-template-rows: repeat(4, min-content);
-        gap: 1rem;
-        row-gap: 1rem;
-    }
-
 }
 
 @media screen and (max-width:557px){
@@ -480,11 +471,6 @@ tbody,th,td,tr,input {
 
     .card-category p {
         font-size: 1.2rem;
-    }
-
-    .card-product {
-        padding: 1rem .5rem;
-        border-radius: 0.5rem;
     }
 }
 
@@ -516,12 +502,6 @@ tbody,th,td,tr,input {
         font-size: 1rem;
     }
 
-    .container-products {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(4, min-content);
-        gap: 1rem;
-        row-gap: 1rem;
-    }
 }
   
 .nav__list {
@@ -626,6 +606,7 @@ tbody,th,td,tr,input {
     background-color: var(--first-color);
     color: var(--body-color);
     border: solid 1px var(--first-color);
+    cursor: pointer !important;
   }
 
 /*========== SCROLL UP ==========*/
@@ -685,6 +666,10 @@ tbody,th,td,tr,input {
   
     .nav__list {
       column-gap: 0;
+    }
+
+    .card-product {
+        width: 100%;
     }
   
   

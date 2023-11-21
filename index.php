@@ -139,8 +139,8 @@ $result = mysqli_num_rows($query);
                                 <a href="detallesProductos.php?id=<?php echo $data['id_producto']; ?>&token=<?php echo
                                 hash_hmac('sha1', $data['id_producto'], KEY_TOKEN); ?>" class="button">Detalles</a>
                                     
-                                <button class="button--white" type="button" onclick="addProducto(<?php echo $data['id_producto'] ?>,
-                                <?php echo hash_hmac('sha1', $data['id_producto'], KEY_TOKEN) ?>)"><i class="uil uil-shopping-cart-alt button__icon"></i></button>
+                                <button class="button--white" type="button" onclick="addProducto(<?php echo $data['id_producto'] ?>,'<?php echo hash_hmac('sha1', $data['id_producto'], KEY_TOKEN); ?>')">
+                                <i class="uil uil-shopping-cart-alt button__icon"></i></button>
                             </div>
                         </div>
                     </div>

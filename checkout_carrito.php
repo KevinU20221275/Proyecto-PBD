@@ -1,7 +1,6 @@
 <?php
 require('conexion.bd.php');
 require('config.php');
-
 $productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
 $lista_productos = array();
 
@@ -46,7 +45,6 @@ if ($productos != null) {
 
 // session_destroy();
 ?>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -87,14 +85,6 @@ if ($productos != null) {
                     <li class="nav__item">
                         <a href="#portafolio" class="nav__link">
                             <i class="uil uil-scenery nav__icon"></i> Portafolio
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="checkout_carrito.php" class="nav__link">
-                            <i class="uil uil-message nav__icon"></i> Carrito
-                            <span id="num_cart" class="badge bg-secondary">
-                                <?php echo $num_cart; ?>
-                            </span>
                         </a>
                     </li>
                 </ul>
@@ -141,7 +131,7 @@ if ($productos != null) {
                                 <td>$ <?php echo number_format($precio_desc,2,'.',',');?></td>
                                 <td>
                                     <input type="number" min="1" max="10" step="1" value="<?php echo $cantidad?>"
-                                    size="5" id="cantidad_<?php echo $_id; ?>" onchange="">
+                                    size="5" id="cantidad_<?php echo $_id; ?>" onchange="updateCantidad(this.value, '<?php echo $_id;?>')">
                                 </td>
                                 <td>
                                     <div id="subtotal_<?php echo $_id?>" name="subtotal[]">
@@ -150,14 +140,14 @@ if ($productos != null) {
                                 </td>
                                 <td>
                                     <a href="#" id="delete" class="btn btn-warning btn-sm" data-bs-id="<?php echo $_id; ?>"
-                                    data-bs-toggle="modal" data-bs-target="modalDelete">Eliminar</a>
+                                    data-bs-toggle="modal" data-bs-target="#modalDelete">Eliminar</a>
                                 </td>
                             </tr>
                         <?php }; ?>
 
                         <tr>
                             <td colspan="3"></td>
-                            <td colsapn="4">
+                            <td colspan="4">
                                 <p class="h3" id="total">
                                     <?php echo number_format($total,2,'.',','); ?>
                                 </p>
@@ -174,17 +164,23 @@ if ($productos != null) {
             </div>
         </div>
     </div>
+
+    <!--==================== SCROLL TOP ====================-->
+    <a href="#" class="scrollup" id="scroll-up">
+        <i class="uil uil-arrow-up scrollup__icon"></i>
+    </a>
     
 
     <script src="./JS/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
     <script>
-        function addProducto(id, token){
-            let url = 'carrito.php'
+        function updateCantidad(cantidad, id){
+            let url = 'updateCarrito.php'
             let formData = new FormData()
+            formData.append('action', 'agregar')
             formData.append('id', id)
-            formData.append('token', token)
+            formData.append('cantidad', cantidad)
 
             fetch(url, {
                 method: 'POST',
@@ -193,8 +189,9 @@ if ($productos != null) {
             }).then(res => res.json())
             .then(data => {
                 if(data.ok){
-                    let indicador = document.getElementById("num_cart")
-                    indicador.innerHTML = data.numero
+                    let subtotal = document.getElementById('subtotal_'+id)
+                    subtotal.innerHTML = data.sub
+
                 }
             })
         }

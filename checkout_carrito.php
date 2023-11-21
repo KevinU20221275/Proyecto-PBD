@@ -5,41 +5,9 @@ $productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['pr
 $lista_productos = array();
 
 if ($productos != null) {
-    // Obtener los IDs de los productos en el carrito
-    $producto_ids = array_keys($productos);
-
-    // Crear una cadena de marcadores de posición para la consulta IN
-    $placeholders = implode(',', array_fill(0, count($producto_ids), '?'));
-
-    // Consulta SQL para seleccionar los productos en el carrito
-    $query = "SELECT id_producto, NombreProducto, Precio, Descuento FROM `Producto` WHERE id_producto IN ($placeholders)";
-    
-    // Preparar la consulta
-    $stmt = $conexion->prepare($query);
-
-    // Verificar si la preparación fue exitosa
-    if ($stmt) {
-        // Vincular los valores a los marcadores de posición
-        $stmt->bind_param(str_repeat('i', count($producto_ids)), ...$producto_ids);
-
-        // Ejecutar la consulta
-        $stmt->execute();
-
-        // Obtener resultados
-        $result = $stmt->get_result();
-
-        // Obtener los productos y almacenarlos en $lista_productos
-        while ($row = $result->fetch_assoc()) {
-            $producto_id = $row['id_producto'];
-            $lista_productos[$producto_id] = $row;
-            $lista_productos[$producto_id]['Cantidad'] = $productos[$producto_id];
-        }
-
-        // Cerrar la declaración
-        $stmt->close();
-    } else {
-        // Manejar el error de preparación
-        echo "Error en la preparación de la consulta: " . $conexion->error;
+    foreach ($productos as $clave => $cantidad){
+        $query = mysqli_query($conexion, "SELECT id_producto, NombreProducto, Precio, Descuento,$cantidad AS Cantidad FROM `Producto` WHERE id_producto=$clave");
+        $lista_productos[] = mysqli_fetch_array($query);
     }
 }
 
@@ -52,6 +20,7 @@ if ($productos != null) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" href="./CSS/theme.css">
     <!--==================== UNICONS ====================-->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <title>Tienda Online</title>
@@ -130,8 +99,7 @@ if ($productos != null) {
                                 <td><?php echo $nombre?></td>
                                 <td>$ <?php echo number_format($precio_desc,2,'.',',');?></td>
                                 <td>
-                                    <input type="number" min="1" max="10" step="1" value="<?php echo $cantidad?>"
-                                    size="5" id="cantidad_<?php echo $_id; ?>" onchange="updateCantidad(this.value, '<?php echo $_id;?>')">
+                                    <input type="number" min="1" max="10" step="1" value="<?php echo $cantidad?>" size="5" id="cantidad_<?php echo $_id; ?>" onchange="updateCantidad(this.value,<?php echo $_id;?>)">
                                 </td>
                                 <td>
                                     <div id="subtotal_<?php echo $_id?>" name="subtotal[]">

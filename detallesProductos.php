@@ -31,8 +31,6 @@ if ($id == '' || $token == '') {
     };
     
 };
-
-
 ?>
 
 <!DOCTYPE html>
@@ -42,6 +40,7 @@ if ($id == '' || $token == '') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="./CSS/style.css">
+    <link rel="stylesheet" href="./CSS/theme.css">
     <!--==================== UNICONS ====================-->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
     <title>Tienda Online</title>
@@ -78,9 +77,8 @@ if ($id == '' || $token == '') {
                         </a>
                     </li>
                     <li class="nav__item">
-                        <a href="checkout_carrito.php" class="nav__link">
-                            <i class="uil uil-message nav__icon"></i> Carrito
-                            <span><?php echo $num_cart; ?></span>
+                        <a href="checkout_carrito.php" id="num_cart" class="nav__link">
+                            <i class="uil uil-shopping-cart-alt">   <?php echo $num_cart; ?></i> 
                         </a>
                     </li>
                 </ul>
@@ -146,11 +144,10 @@ if ($id == '' || $token == '') {
             .then(res => res.json())
             .then(data => {
                 if(data.ok){
-                    let indicador = document.getElementById("num_cart")
-                    indicador.innerHTML = data.numero
+                    // let indicador = document.getElementById("num_cart")
+                    // indicador.innerHTML = data.numero
                 }
             })
-            .catch(error => console.error('Error', error))
         }
     </script>
 </body>

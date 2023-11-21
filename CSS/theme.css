@@ -1,0 +1,14 @@
+.change-theme {
+    margin-bottom: var(--mb-1);
+}
+
+@media screen and (max-width:767px){
+    .change-theme {
+        margin-bottom: 0;
+    }
+
+    main {
+        text-align: center !important;
+    }
+}
+

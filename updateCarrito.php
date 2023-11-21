@@ -1,23 +1,21 @@
 <?php
 require('config.php');
-require('conexion.bd.php');
+require 'conexion.bd.php';
 
 
-if (isset($_POST)){
+if (isset($_POST['action'])){
     $action = $_POST['action'];
     $id = isset($_POST['id']) ? $_POST['id'] : 0;
 
     if ($action == 'agregar'){
         $cantidad = isset($_POST['cantidad']) ? $_POST['cantidad'] : 0;
         $respuesta = add($id, $cantidad);
-        $datos = array();
         if ($respuesta > 0) {
             $datos['ok'] = true;
-            $datos['sub'] = '$' . numfmt_format($respuesta, 2, '.', ',');
         } else {
             $datos['ok'] = false;
-        };
-        
+        }
+        $datos['sub'] = '$'. number_format($respuesta,2,'.',',' );  
     } else{
         $datos['ok'] = false;
     }
@@ -26,11 +24,7 @@ if (isset($_POST)){
 }
 
 
-
 echo json_encode($datos);
-
-
-
 
 
 function add($id, $cantidad){
@@ -39,9 +33,8 @@ function add($id, $cantidad){
         if(isset($_SESSION['carrito']['productos'][$id])){
             $_SESSION['carrito']['productos'][$id] = $cantidad;
 
+            $conexion = new mysqli("localhost","root","","Login","3307");
             $query = mysqli_query($conexion, "SELECT Precio, Descuento FROM `Producto` WHERE id_producto=$id LIMIT 1");
-            mysqli_stmt_bind_param($query, "i", $id);
-            mysqli_stmt_execute($query);
             $data = mysqli_fetch_array($query);
             $precio = $data['Precio'];
             $descuento = $data['Descuento'];
@@ -49,15 +42,10 @@ function add($id, $cantidad){
             $res = $cantidad * $precioDescuento;
 
             return $res;
-        } else {
-            return $res;
-        }
-        
+        }   
     } else {
         return $res;
     }
-
-    
-};
+}
 ?>
 

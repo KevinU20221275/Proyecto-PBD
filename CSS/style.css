@@ -609,6 +609,18 @@ tbody,th,td,tr,input {
     cursor: pointer !important;
   }
 
+.btn-primary {
+    background-color: var(--first-color) !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--first-color-alt) !important;
+}
+
+.btn-outline-primary{
+    background-color: var(--first-color) !important;
+}
+
 /*========== SCROLL UP ==========*/
 .scrollup {
     position: fixed;

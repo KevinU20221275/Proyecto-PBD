@@ -133,6 +133,25 @@ if ($productos != null) {
         </div>
     </div>
 
+    <!-- Modal -->
+    <div class="modal fade" id="modalDelete" tabindex="-1" aria-labelledby="modalDeleteLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalDeleteLabel">Atencion!</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            Eliminar Producto de la Lista?
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+            <button id="btn-Delete" type="button" class="btn btn-danger" onclick="deleteProductoLista()">Eliminar</button>
+        </div>
+        </div>
+    </div>
+    </div>
+
     <!--==================== SCROLL TOP ====================-->
     <a href="#" class="scrollup" id="scroll-up">
         <i class="uil uil-arrow-up scrollup__icon"></i>
@@ -143,6 +162,14 @@ if ($productos != null) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
     <script>
+        let eliminarModal = document.getElementById('modalDelete')
+        eliminarModal.addEventListener('show.bs.modal', (e)=>{
+            let button = e.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            let btnDelete = eliminarModal.querySelector('.modal-footer #btn-Delete')
+            btnDelete.value = id
+        })
+
         function updateCantidad(cantidad, id){
             let url = 'updateCarrito.php'
             let formData = new FormData()
@@ -160,6 +187,39 @@ if ($productos != null) {
                     let subtotal = document.getElementById('subtotal_'+id)
                     subtotal.innerHTML = data.sub
 
+                    let total = 0.00
+                    let list = document.getElementsByName('subtotal[]')
+
+                    for (let i = 0; i < list.length; i++){
+                        total += parseFloat(list[i].innerHTML.replace(/[$,]/g, ''))
+                    }
+
+                    total = new Intl.NumberFormat('en-US', {
+                        minimumFractionDigits: 2
+                    }).format(total)
+
+                    document.getElementById('total').innerHTML = '$' + total
+
+                }
+            })
+        }
+
+        function deleteProductoLista(){
+            let btnEliminar = document.getElementById('btn-Delete')
+            let id = btnEliminar.value
+            let url = 'updateCarrito.php'
+            let formData = new FormData()
+            formData.append('action', 'eliminar')
+            formData.append('id', id)
+
+            fetch(url, {
+                method: 'POST',
+                body: formData,
+                mode: 'cors'
+            }).then(res => res.json())
+            .then(data => {
+                if (data.ok){
+                    location.reload()
                 }
             })
         }

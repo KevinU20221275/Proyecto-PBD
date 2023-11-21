@@ -16,7 +16,9 @@ if (isset($_POST['action'])){
             $datos['ok'] = false;
         }
         $datos['sub'] = '$'. number_format($respuesta,2,'.',',' );  
-    } else{
+    } else if ($action == 'eliminar'){
+        $datos['ok'] = eliminar($id);
+    } else {
         $datos['ok'] = false;
     }
 } else {
@@ -45,6 +47,17 @@ function add($id, $cantidad){
         }   
     } else {
         return $res;
+    }
+}
+
+function eliminar($id){
+    if($id > 0) {
+        if(isset($_SESSION['carrito']['productos'][$id])){
+            unset($_SESSION['carrito']['productos'][$id]);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
 ?>

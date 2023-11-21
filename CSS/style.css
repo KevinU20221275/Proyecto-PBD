@@ -404,7 +404,10 @@ tbody,th,td,tr,input {
 }
 
 
-
+.modal{
+    background-color: var(--body-color) !important;
+    color: var(--text-color) !important;
+}
 
 
 
@@ -611,15 +614,17 @@ tbody,th,td,tr,input {
 
 .btn-primary {
     background-color: var(--first-color) !important;
+    border: none !important;
+    outline: none !important;
 }
 
 .btn-primary:hover {
     background-color: var(--first-color-alt) !important;
+    border: none !important;
+    outline: none !important;
 }
 
-.btn-outline-primary{
-    background-color: var(--first-color) !important;
-}
+
 
 /*========== SCROLL UP ==========*/
 .scrollup {

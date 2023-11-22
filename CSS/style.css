@@ -409,6 +409,11 @@ tbody,th,td,tr,input {
     color: var(--text-color) !important;
 }
 
+.modal-content, .modal-header, .modal-body, .modal-footer{
+    background-color: var(--body-color) !important;
+    color: var(--text-color) !important;
+}
+
 
 
 /*==================== NAV ====================*/

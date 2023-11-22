@@ -164,6 +164,17 @@ if ($productos != null) {
                 let URL = 'captura.php'
                 actions.order.capture().then(function (detalles){
                     console.log(detalles)
+
+                    let url = 'captura.php'
+                    return fetch(url, {
+                        method: 'POST',
+                        header: {
+                            'content-type':'application/json'
+                        },
+                        body: JSON.stringify({
+                            detalles: detalles
+                        })
+                    })
                 })
             }
             ,

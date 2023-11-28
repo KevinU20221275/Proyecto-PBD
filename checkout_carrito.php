@@ -6,7 +6,7 @@ $lista_productos = array();
 
 if ($productos != null) {
     foreach ($productos as $clave => $cantidad){
-        $query = mysqli_query($conexion, "SELECT id_producto, NombreProducto, Precio, Descuento,$cantidad AS Cantidad FROM `Producto` WHERE id_producto=$clave");
+        $query = mysqli_query($conexion, "SELECT Id, Nombre, Precio, Descuento,$cantidad AS Cantidad FROM `Producto` WHERE Id=$clave");
         $lista_productos[] = mysqli_fetch_array($query);
     }
 }
@@ -26,7 +26,7 @@ if ($productos != null) {
     <title>Tienda Online</title>
 </head>
 <body class="body">
-<header class="header" id="header">
+    <header class="header" id="header">
         <nav class="nav contenedor">
             <a href="#" class="nav__logo">Logo</a>
             <div class="nav__menu" id="nav-menu">
@@ -86,8 +86,8 @@ if ($productos != null) {
                     } else {
                         $total = 0;
                         foreach($lista_productos as $producto){
-                            $_id = $producto['id_producto'];
-                            $nombre = $producto['NombreProducto'];
+                            $_id = $producto['Id'];
+                            $nombre = $producto['Nombre'];
                             $precio = $producto['Precio'];
                             $descuento = $producto['Descuento'];
                             $precio_desc = $precio - (($precio * $descuento) / 100);
@@ -103,7 +103,7 @@ if ($productos != null) {
                                 </td>
                                 <td>
                                     <div id="subtotal_<?php echo $_id?>" name="subtotal[]">
-                                        <?php echo number_format($subtotal,2,'.',',');?>
+                                        $ <?php echo number_format($subtotal,2,'.',',');?>
                                     </div>
                                 </td>
                                 <td>

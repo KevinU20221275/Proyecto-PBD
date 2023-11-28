@@ -14,7 +14,7 @@ if (is_array($datos)){
     $email = $datos['detalles']['payer']['email_address'];
     $id_cliente = $datos['detalles']['payer']['payer_id'];
 
-    $query = $conexion->prepare("INSERT INTO compra (id_transaccion, fecha, status, email, id_cliente, total) VALUES (?, ?, ?, ?, ?, ?)");
+    $query = $conexion->prepare("INSERT INTO Compra (id_transaccion, fecha, status, email, id_cliente, total) VALUES (?, ?, ?, ?, ?, ?)");
     $query->bind_param("sssssd", $id_transaccion, $fecha_nueva, $status, $email, $id_cliente, $monto);
     $query->execute();
 
@@ -24,19 +24,20 @@ if (is_array($datos)){
         $productos = isset($_SESSION['carrito']['productos']) ? $_SESSION['carrito']['productos'] : null;
         if ($productos != null) {
             foreach ($productos as $clave => $cantidad){
-                $query = mysqli_query($conexion, "SELECT id_producto, NombreProducto, Precio, Descuento FROM `Producto` WHERE id_producto=$clave");
+                $query = mysqli_query($conexion, "SELECT Id, Nombre, Precio, Descuento FROM `Producto` WHERE Id=$clave");
                 $row_productos = mysqli_fetch_array($query);
                 $precio = $row_productos['Precio'];
                 $descuento = $row_productos['Descuento'];
                 $precio_desc = $precio - (($precio * $descuento) / 100);
 
-                $sql_insert = $conexion->prepare("INSERT INTO detalle_compra (id_compra, id_producto, nombre, precio, cantidad) VALUES (?, ?, ?, ?, ?)");
-                $sql_insert->bind_param("iisdi", $id, $clave, $row_productos['NombreProducto'], $precio_desc, $cantidad);
+                $sql_insert = $conexion->prepare("INSERT INTO detalle_de_compra (id_compra, id_producto, NombreProducto, Precio, Cantidad) VALUES (?, ?, ?, ?, ?)");
+                $sql_insert->bind_param("iisdi", $id, $clave, $row_productos['Nombre'], $precio_desc, $cantidad);
                 $sql_insert->execute();
 
             }
+             
         } 
-        unset($_SESSION['carrito']);             
+        unset($_SESSION['carrito']); 
     }
 }
 

@@ -19,7 +19,7 @@ if (empty($_POST['NombreProducto']) || empty($_POST['Descripcion'])){
 
     $descuento = $_POST['Descuento'];
     $descuentoInt = intval($descuento);
-    $query= "INSERT INTO `Producto` VALUES (@id,'$nombreProducto','$descripcion','$precio_float','$stock_int' , '$id_Categoria','$imagen','$descuentoInt')";
+    $query= "INSERT INTO `Producto` VALUES (@id,'$nombreProducto','$descripcion','$precio_float',$descuento,'$stock_int' , '$id_Categoria','$imagen')";
     $result = $conexion->query($query);
 
     if ($result) {

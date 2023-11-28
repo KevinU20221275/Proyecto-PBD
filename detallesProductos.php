@@ -11,12 +11,12 @@ if ($id == '' || $token == '') {
 } else {
     $token_tmp = hash_hmac('sha1', $id, KEY_TOKEN);
     if ($token === $token_tmp) {
-        $query = mysqli_query($conexion, "SELECT COUNT(id_producto) FROM `Producto` WHERE id_producto=$id");
+        $query = mysqli_query($conexion, "SELECT COUNT(id) FROM `Producto` WHERE id=$id");
         $result = mysqli_num_rows($query);
         if ($result > 0) {
-            $query = mysqli_query($conexion, "SELECT * FROM `Producto` WHERE id_producto=$id LIMIT 1");
+            $query = mysqli_query($conexion, "SELECT * FROM `Producto` WHERE id=$id LIMIT 1");
             $data = mysqli_fetch_array($query);
-            $nombreProducto = $data['NombreProducto'];
+            $nombreProducto = $data['Nombre'];
             $descripcion = $data['Descripcion'];
             $precio = $data['Precio'];
             $imagen = $data['imagen'];

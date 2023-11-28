@@ -16,22 +16,30 @@ if (!empty($_POST)){
     $password = trim($_POST['password']);
     $repassword = trim($_POST['repassword']);
 
-    $id = registrarClientes([$nombres, $apellidos, $email, $telefono, $dui, $estatus, $fecha_alta], $conexion);
-    if ($id > 0){
-        $pass_hash = password_hash($password, PASSWORD_DEFAULT);
-        $token = generarToken();
-        if(!registrarUsuario([$usuario, $pass_hash, $token, $id], $conexion)){
-            $errors[] = "Error al registrar Usuario";
-        }
-        
-    } else {
-        $errors[] = "Error al registrar Cliente";
-    }
-    if (count($errors)){
+    if (campoNulo([$nombres, $apellidos, $email, $telefono, $dui, $estatus, $fecha_alta, $password, $repassword])){
+        $errors []= "Debe llenar todos los campos";
+    };
 
-    }else {
-        print_r($errors);
+    if (!validarPassword($password , $repassword)){
+        $errors[] = "Las contraseñas no coinciden";
     }
+
+    if (validarUsuario($usuario , $conexion)){
+        $errors[] = "El nombre de usuario ya existe";
+    }
+
+    if (count($errors) == 0){
+        $id = registrarClientes([$nombres, $apellidos, $email, $telefono, $dui, $estatus, $fecha_alta], $conexion);
+        if ($id > 0){
+            $pass_hash = password_hash($password, PASSWORD_DEFAULT);
+            $token = generarToken();
+            if(!registrarUsuario([$usuario, $pass_hash, $token, $id], $conexion)){
+                $errors[] = "Error al registrar Usuario";
+            }
+        }else {
+            $errors[] = "Error al registrar Cliente";
+        } 
+    } 
 }
 ?>
 
@@ -103,22 +111,23 @@ if (!empty($_POST)){
     <main class=" mt-5 mb-md-4 pt-md-5">
         <div class="container ">
             <h2>Datos del Cliente</h2>
+            <?php mostrarErrores($errors); ?>
             <form action="registro.php" class="row g-3" method="post" autocomplete="off">
                 <div class="col-md-6">
                     <label for="nombres"><span class="text-danger">*</span>Nombres</label>
-                    <input type="text" name="nombres" id="nombres" class="form-control" required>
+                    <input type="text" name="nombres" id="nombres" class="form-control" requireda>
                 </div>
                 <div class="col-md-6">
                     <label for="apellidos"><span class="text-danger">*</span>Apellidos</label>
-                    <input type="text" name="apellidos" id="apellidos" class="form-control" required>
+                    <input type="text" name="apellidos" id="apellidos" class="form-control" requireda>
                 </div>
                 <div class="col-md-6">
                     <label for="email"><span class="text-danger">*</span>Correo Electronico</label>
-                    <input type="email" name="email" id="email" class="form-control" required>
+                    <input type="email" name="email" id="email" class="form-control" requireda>
                 </div>
                 <div class="col-md-6">
                     <label for="telefono"><span class="text-danger">*</span>Telefono</label>
-                    <input type="tel" name="telefono" id="telefono" class="form-control" required>
+                    <input type="tel" name="telefono" id="telefono" class="form-control" requireda>
                 </div>
                 <div class="col-md-6">
                     <label for="dui">DUI</label>
@@ -126,15 +135,15 @@ if (!empty($_POST)){
                 </div>
                 <div class="col-md-6">
                     <label for="usuario"><span class="text-danger">*</span>Nombre de Usuario</label>
-                    <input type="text" name="usuario" id="usuario" class="form-control" required>
+                    <input type="text" name="usuario" id="usuario" class="form-control" requireda>
                 </div>
                 <div class="col-md-6">
                     <label for="password"><span class="text-danger">*</span>Password</label>
-                    <input type="password" name="password" id="password" class="form-control" required>
+                    <input type="password" name="password" id="password" class="form-control" requireda>
                 </div>
                 <div class="col-md-6">
                     <label for="repassword"><span class="text-danger">*</span>Repetir Password</label>
-                    <input type="password" name="repassword" id="repassword" class="form-control" required>
+                    <input type="password" name="repassword" id="repassword" class="form-control" requireda>
                 </div>
                 <div class="col-12 mt-2">
                     <button type="submit" class="btn btn-primary">Registrarse</button>

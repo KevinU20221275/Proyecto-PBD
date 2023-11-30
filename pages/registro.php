@@ -1,7 +1,7 @@
 <?php
-require 'conexion.bd.php';
-require 'config.php';
-require 'clienteFunciones.php';
+require '../config/conexion.bd.php';
+require '../config/config.php';
+require '../config/clienteFunciones.php';
 
 $errors = [];
 if (!empty($_POST)){
@@ -9,14 +9,14 @@ if (!empty($_POST)){
     $apellidos = trim($_POST['apellidos']);
     $email = trim($_POST['email']);
     $telefono = trim($_POST['telefono']);
-    $dui = trim($_POST['dui']);
+    $direccion = trim($_POST['direccion']);
     $estatus = 1;
     $fecha_alta = date('Y-m-d H:i:s');
     $usuario = trim($_POST['usuario']);
     $password = trim($_POST['password']);
     $repassword = trim($_POST['repassword']);
 
-    if (campoNulo([$nombres, $apellidos, $email, $telefono, $dui, $estatus, $fecha_alta, $password, $repassword])){
+    if (campoNulo([$nombres, $apellidos, $email, $telefono, $direccion, $estatus, $fecha_alta, $password, $repassword])){
         $errors []= "Debe llenar todos los campos";
     };
 
@@ -29,16 +29,18 @@ if (!empty($_POST)){
     }
 
     if (count($errors) == 0){
-        $id = registrarClientes([$nombres, $apellidos, $email, $telefono, $dui, $estatus, $fecha_alta], $conexion);
+        $id = registrarClientes([$nombres, $apellidos, $email, $telefono, $direccion, $estatus, $fecha_alta], $conexion);
         if ($id > 0){
             $pass_hash = password_hash($password, PASSWORD_DEFAULT);
             $token = generarToken();
             if(!registrarUsuario([$usuario, $pass_hash, $token, $id], $conexion)){
                 $errors[] = "Error al registrar Usuario";
+                header("location: ..index.php");
             }
         }else {
             $errors[] = "Error al registrar Cliente";
-        } 
+        }
+        
     } 
 }
 ?>
@@ -49,8 +51,8 @@ if (!empty($_POST)){
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./CSS/style.css">
-    <link rel="stylesheet" href="./CSS/theme.css">
+    <link rel="stylesheet" href="..assets/CSS/style.css">
+    <link rel="stylesheet" href="..assets/CSS/theme.css">
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
@@ -59,54 +61,7 @@ if (!empty($_POST)){
     <title>Nav</title>
 </head>
 <body class="body">
-    <header class="header" id="header">
-        <nav class="nav contenedor">
-            <a href="#" class="nav__logo">Logo</a>
-            <div class="nav__menu" id="nav-menu">
-                <ul class="nav__list grid">
-                    <li class="nav__item">
-                        <a href="#home" class="nav__link fw-600 active-link">
-                            <i class="uil uil-estate nav__icon"></i> Home
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#about" class="nav__link">
-                            <i class="uil uil-user nav__icon"></i> About
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#skills" class="nav__link">
-                            <i class="uil uil-file-alt nav__icon"></i> Skills
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#services" class="nav__link">
-                            <i class="uil uil-briefcase-alt nav__icon"></i> Services
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#portafolio" class="nav__link">
-                            <i class="uil uil-scenery nav__icon"></i> Portafolio
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="checkout_carrito.php" id="num_cart" class="nav__link">
-                            <i class="uil uil-shopping-cart-alt">   <?php echo $num_cart; ?></i> 
-                        </a>
-                    </li>
-                </ul>
-                <i class="uil uil-times nav__close " id="nav-close"></i>
-            </div>
-            <div class="nav__btns">
-                <!-- Cambiar thema -->
-                <i class="uil uil-moon change-theme" id="theme-button"></i>
-
-                <div class="nav__toggle" id="nav-toggle">
-                    <i class="uil uil-apps"></i>
-                </div>
-            </div>
-        </nav>
-    </header>
+    
 
     <main class=" mt-5 mb-md-4 pt-md-5">
         <div class="container ">
@@ -130,8 +85,8 @@ if (!empty($_POST)){
                     <input type="tel" name="telefono" id="telefono" class="form-control" requireda>
                 </div>
                 <div class="col-md-6">
-                    <label for="dui">DUI</label>
-                    <input type="text" name="dui" id="dui" class="form-control">
+                    <label for="direccion">Direccion</label>
+                    <input type="text" name="direccion" id="direccion" class="form-control">
                 </div>
                 <div class="col-md-6">
                     <label for="usuario"><span class="text-danger">*</span>Nombre de Usuario</label>
@@ -158,7 +113,7 @@ if (!empty($_POST)){
     </a>
     
 
-    <script src="./JS/index.js"></script>
+    <script src="..assets/JS/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

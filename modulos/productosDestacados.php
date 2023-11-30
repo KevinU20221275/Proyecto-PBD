@@ -32,7 +32,7 @@ $result = mysqli_num_rows($query);
                             </div>
                             <div class="btn-group">
                                     
-                                <a href="detallesProductos.php?id=<?php echo $data['Id']; ?>&token=<?php echo
+                                <a href="./pages/detallesProductos.php?id=<?php echo $data['Id']; ?>&token=<?php echo
                                 hash_hmac('sha1', $data['Id'], KEY_TOKEN); ?>" class="button">Detalles</a>
                                     
                                 <button class="button--white" type="button" onclick="addProducto(<?php echo $data['Id'] ?>,'<?php echo hash_hmac('sha1', $data['Id'], KEY_TOKEN); ?>')">

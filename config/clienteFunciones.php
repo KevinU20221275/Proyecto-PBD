@@ -65,4 +65,29 @@ function mostrarErrores(array $errors){
         
     }
 }
+
+function loginUsuario($usuario, $password, $conexion){
+    $query = $conexion->prepare("SELECT id, NombreUsuario, password FROM Usuarios WHERE NombreUsuario LIKE ? LIMIT 1");
+    $usuario = "%" . $usuario . "%";
+    $query->bind_param("s", $usuario);
+    $query->execute();
+    $query->store_result();
+
+    if ($query->num_rows > 0){
+        $query->bind_result($id, $NombreUsuario, $hashed_password);
+        $query->fetch();
+
+        if (password_verify($password, $hashed_password)){
+            $_SESSION['user_id'] = $id;
+            $_SESSION['user_name'] = $NombreUsuario;
+            header("Location: ../index.php");
+            exit;
+        } else {
+            return 'Usuario o Contraseña incorrectos';
+        }
+    } else {
+        return 'Usuario o Contraseña incorrectos';
+    }
+}
+
 ?>

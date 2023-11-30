@@ -33,7 +33,7 @@ $queryMasVendidos = mysqli_query($conexion, "SELECT a.Id,a.Nombre,a.Precio,a.Des
                             </div>
                             <div class="btn-group">
                                     
-                                <a href="detallesProductos.php?id=<?php echo $productosMasVendidos['Id']; ?>&token=<?php echo
+                                <a href="./pages/detallesProductos.php?id=<?php echo $productosMasVendidos['Id']; ?>&token=<?php echo
                                 hash_hmac('sha1', $productosMasVendidos['Id'], KEY_TOKEN); ?>" class="button">Detalles</a>
                                     
                                 <button class="button--white" type="button" onclick="addProducto(<?php echo $productosMasVendidos['Id'] ?>,'<?php echo hash_hmac('sha1', $productosMasVendidos['Id'], KEY_TOKEN); ?>')">
@@ -45,4 +45,4 @@ $queryMasVendidos = mysqli_query($conexion, "SELECT a.Id,a.Nombre,a.Precio,a.Des
                 }
             }
             ?>
-        </div>
+</div>

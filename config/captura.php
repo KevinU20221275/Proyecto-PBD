@@ -6,16 +6,22 @@ $json = file_get_contents('php://input');
 $datos = json_decode($json, true);
 
 if (is_array($datos)){
+
+    $id_cliente = $_SESSION['user_cliente'];
+    $query_cliente = mysqli_query($conexion, "SELECT email,direccion FROM `Cliente` WHERE Id=$id_cliente");
+    $data_cliente = mysqli_fetch_array($query);
+
     $id_transaccion = $datos['detalles']['id'];
     $monto = $datos['detalles']['purchase_units'][0]['amount']['value'];
     $status = $datos['detalles']['status'];
     $fecha = $datos['detalles']['update_time'];
     $fecha_nueva = date('Y-m-d H:i:s', strtotime($fecha));
-    $email = $datos['detalles']['payer']['email_address'];
-    $id_cliente = $datos['detalles']['payer']['payer_id'];
+    $email = $data_cliente['email'];
+    $direccion = $data_cliente['direccion'];
+    
 
-    $query = $conexion->prepare("INSERT INTO Compra (id_transaccion, fecha, status, email, id_cliente, total) VALUES (?, ?, ?, ?, ?, ?)");
-    $query->bind_param("sssssd", $id_transaccion, $fecha_nueva, $status, $email, $id_cliente, $monto);
+    $query = $conexion->prepare("INSERT INTO Compra (id_transaccion, fecha, status, email, direccion, id_cliente, total) VALUES (?, ?, ?, ?, ?, ?)");
+    $query->bind_param("ssssssd", $id_transaccion, $fecha_nueva, $status, $email, direccion,$id_cliente, $monto);
     $query->execute();
 
     $id = $conexion->insert_id;

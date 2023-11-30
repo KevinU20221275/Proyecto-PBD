@@ -60,7 +60,7 @@ if ($productos != null) {
                         <ul class="dropdown-menu" aria-labelledby="btn_session">
                             <p><?php echo $usuario ?></p>
                             <li class="nav__item">
-                                <a href="logout.php" class="dropdown-item nav__link">Cerrar Sesion</a>
+                                <a href="../config/logout.php" class="dropdown-item nav__link">Cerrar Sesion</a>
                             </li>
                         </ul>
                     </div>

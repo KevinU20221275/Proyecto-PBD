@@ -22,8 +22,8 @@ function generarToken(){
 
 
 function registrarClientes(array $datos, $conexion){
-    $query = $conexion->prepare("INSERT INTO cliente (Nombres, Apellidos, Email, Telefono,Direccion, Estatus, fecha_Registro) VALUES (?, ?, ?, ?, ?,?,?)");
-    $query->bind_param("sssssis", ...$datos);
+    $query = $conexion->prepare("INSERT INTO cliente (Nombres, Apellidos, Email, Telefono,Direccion, fecha_Registro) VALUES (?, ?, ?, ?,?,?)");
+    $query->bind_param("ssssss", ...$datos);
     if($query->execute()){
         return $id = $conexion->insert_id;
     }
@@ -66,22 +66,27 @@ function mostrarErrores(array $errors){
     }
 }
 
-function loginUsuario($usuario, $password, $conexion){
-    $query = $conexion->prepare("SELECT id, NombreUsuario, password FROM Usuarios WHERE NombreUsuario LIKE ? LIMIT 1");
+function loginUsuario($usuario, $password, $conexion, $proceso){
+    $query = $conexion->prepare("SELECT id, NombreUsuario, password, id_cliente FROM Usuarios WHERE NombreUsuario LIKE ? LIMIT 1");
     $usuario = "%" . $usuario . "%";
     $query->bind_param("s", $usuario);
     $query->execute();
     $query->store_result();
 
     if ($query->num_rows > 0){
-        $query->bind_result($id, $NombreUsuario, $hashed_password);
+        $query->bind_result($id, $NombreUsuario, $hashed_password, $id_cliente);
         $query->fetch();
 
         if (password_verify($password, $hashed_password)){
             $_SESSION['user_id'] = $id;
             $_SESSION['user_name'] = $NombreUsuario;
-            header("Location: ../index.php");
-            exit;
+            $_SESSION['user_cliente'] = $id_cliente;
+            if ($proceso == 'pago') {
+                header("Location: pago.php");
+            } else {
+                header("Location: ../index.php");
+                exit;
+            }
         } else {
             return 'Usuario o Contraseña incorrectos';
         }

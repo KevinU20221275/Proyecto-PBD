@@ -53,7 +53,7 @@ if ($productos != null) {
                         <ul class="dropdown-menu" aria-labelledby="btn_session">
                             <p><?php echo $usuario ?></p>
                             <li class="nav__item">
-                                <a href="logout.php" class="dropdown-item nav__link">Cerrar Sesion</a>
+                                <a href="../config/logout.php" class="dropdown-item nav__link">Cerrar Sesion</a>
                             </li>
                         </ul>
                     </div>
@@ -143,7 +143,11 @@ if ($productos != null) {
         <?php if ($lista_productos != null) { ?>
             <div class="row">
                 <div class="col-md-5 offset-md-7 d-grid gap-2">
-                    <a href="pago.php" class="btn btn-primary btn-lg">Realizar Pago</a>
+                    <?php if (isset($_SESSION['user_cliente'])) { ?>
+                        <a href="pago.php" class="btn btn-primary btn-lg">Realizar Pago</a>
+                    <?php } else {?>
+                        <a href="login.php?pago" class="btn btn-primary btn-lg">Realizar Pago</a>
+                    <?php } ?>
                 </div>
             </div>
         <?php }?>

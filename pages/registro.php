@@ -10,7 +10,6 @@ if (!empty($_POST)){
     $email = trim($_POST['email']);
     $telefono = trim($_POST['telefono']);
     $direccion = trim($_POST['direccion']);
-    $estatus = 1;
     $fecha_alta = date('Y-m-d H:i:s');
     $usuario = trim($_POST['usuario']);
     $password = trim($_POST['password']);
@@ -29,7 +28,7 @@ if (!empty($_POST)){
     }
 
     if (count($errors) == 0){
-        $id = registrarClientes([$nombres, $apellidos, $email, $telefono, $direccion, $estatus, $fecha_alta], $conexion);
+        $id = registrarClientes([$nombres, $apellidos, $email, $telefono, $direccion, $fecha_alta], $conexion);
         if ($id > 0){
             $pass_hash = password_hash($password, PASSWORD_DEFAULT);
             $token = generarToken();

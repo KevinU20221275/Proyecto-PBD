@@ -3,10 +3,13 @@ require '../config/conexion.bd.php';
 require '../config/config.php';
 require '../config/clienteFunciones.php';
 
+$proceso = isset($_GET['pago']) ? 'pago' : 'login';
+
 $errors = [];
 if (!empty($_POST)){
     $usuario = trim($_POST['usuario']);
     $password = trim($_POST['password']);
+    $proceso = $_POST['proceso'] ?? 'login';
 
 
     if (campoNulo([$usuario, $password])){
@@ -14,7 +17,7 @@ if (!empty($_POST)){
     };
 
     if (count($errors) == 0){
-        $errors[] = loginUsuario($usuario, $password, $conexion);
+        $errors[] = loginUsuario($usuario, $password, $conexion, $proceso);
     }
 
 }
@@ -41,14 +44,15 @@ if (!empty($_POST)){
         <h2>Iniciar sesion</h2>
         <?php mostrarErrores($errors) ?>
         <form action="login.php" class="row g-3" method="post" autocomplete="off">
+            <input type="hidden" name="proceso" value="<?php echo $proceso; ?>">
             <div class="form-floating">
                 <input class="form-control" type="text" name="usuario" id="usuario" placeholder="Nombre de Usuario">
-                <label for="usuario">Usuario:</label>
+                <label for="usuario">Usuario</label>
             </div>
 
             <div class="form-floating">
                 <input class="form-control" type="password" name="password" id="password" placeholder="Contraseña">
-                <label for="password">Contraseña:</label>
+                <label for="password">Contraseña</label>
             </div>
 
             <div class="col-12">

@@ -58,11 +58,11 @@ require('./config/config.php');
     <section>
         <h3 class="title">La Excelencia es nuetro Sello</h3>
         <div class="gallery">
-            <img src="images/gallery1.jpg"	alt="Gallery Img1" class="gallery-img-1"/>
-            <img src="images/gallery2.jpg" alt="Gallery Img2" class="gallery-img-2"/>
-            <img src="images/gallery3.jpg" alt="Gallery Img3" class="gallery-img-3"/>
-            <img src="images/gallery4.jpg" alt="Gallery Img4" class="gallery-img-4"/>
-            <img src="images/gallery5.jpg" alt="Gallery Img5" class="gallery-img-5"/>
+            <img src="./assets/images/gallery1.jpg"	alt="Gallery Img1" class="gallery-img-1"/>
+            <img src="./assets/images/gallery2.jpg" alt="Gallery Img2" class="gallery-img-2"/>
+            <img src="./assets/images/gallery3.jpg" alt="Gallery Img3" class="gallery-img-3"/>
+            <img src="./assets/images/gallery4.jpg" alt="Gallery Img4" class="gallery-img-4"/>
+            <img src="./assets/images/gallery5.jpg" alt="Gallery Img5" class="gallery-img-5"/>
         </div>
     </section>
 

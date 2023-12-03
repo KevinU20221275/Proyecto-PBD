@@ -31,7 +31,7 @@ function registrarClientes(array $datos, $conexion){
 }
 
 function registrarUsuario(array $datos, $conexion){
-    $query = $conexion->prepare("INSERT INTO Usuarios (NombreUsuario, password, token, id_cliente) VALUES (?, ?, ?, ?)");
+    $query = $conexion->prepare("INSERT INTO Usuarios (NombreUsuario, password, token, id_cliente,imagen) VALUES (?, ?, ?, ?)");
     $query->bind_param("ssss", ...$datos);
     if($query->execute()){
         return true;

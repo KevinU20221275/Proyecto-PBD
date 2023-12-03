@@ -16,7 +16,7 @@
                         </a>
                     </li>
                     <li class="nav__item">
-                        <a href="#skills" class="nav__link">
+                        <a href="./pages/productos.php" class="nav__link">
                             <i class="uil uil-file-alt nav__icon"></i> Productos
                         </a>
                     </li>

@@ -9,7 +9,7 @@ if (is_array($datos)){
 
     $id_cliente = $_SESSION['user_cliente'];
     $query_cliente = mysqli_query($conexion, "SELECT email,direccion FROM `Cliente` WHERE Id=$id_cliente");
-    $data_cliente = mysqli_fetch_array($query);
+    $data_cliente = mysqli_fetch_array($query_cliente);
 
     $id_transaccion = $datos['detalles']['id'];
     $monto = $datos['detalles']['purchase_units'][0]['amount']['value'];
@@ -20,8 +20,8 @@ if (is_array($datos)){
     $direccion = $data_cliente['direccion'];
     
 
-    $query = $conexion->prepare("INSERT INTO Compra (id_transaccion, fecha, status, email, direccion, id_cliente, total) VALUES (?, ?, ?, ?, ?, ?)");
-    $query->bind_param("ssssssd", $id_transaccion, $fecha_nueva, $status, $email, direccion,$id_cliente, $monto);
+    $query = $conexion->prepare("INSERT INTO Compra (id_transaccion, fecha, status, email, direccion, id_cliente, total) VALUES (?, ?, ?, ?, ?, ?,?)");
+    $query->bind_param("ssssssd", $id_transaccion, $fecha_nueva, $status, $email, $direccion,$id_cliente, $monto);
     $query->execute();
 
     $id = $conexion->insert_id;
@@ -36,7 +36,7 @@ if (is_array($datos)){
                 $descuento = $row_productos['Descuento'];
                 $precio_desc = $precio - (($precio * $descuento) / 100);
 
-                $sql_insert = $conexion->prepare("INSERT INTO detalle_de_compra (id_compra, id_producto, NombreProducto, Precio, Cantidad) VALUES (?, ?, ?, ?, ?)");
+                $sql_insert = $conexion->prepare("INSERT INTO detalle_compra (id_compra, id_producto, NombreProducto, Precio, Cantidad) VALUES (?, ?, ?, ?, ?)");
                 $sql_insert->bind_param("iisdi", $id, $clave, $row_productos['Nombre'], $precio_desc, $cantidad);
                 $sql_insert->execute();
 

@@ -1,6 +1,6 @@
 <?php
 
-$queryMasVendidos = mysqli_query($conexion, "SELECT a.Id,a.Nombre,a.Precio,a.Descuento, a.imagen, COUNT(b.Id_producto) as cantidad FROM `producto` as a inner join `detalle_de_compra` as b on a.id=b.Id_producto GROUP by a.Nombre, b.Id_producto ORDER by count(b.Id_producto) DESC LIMIT 4;");
+$queryMasVendidos = mysqli_query($conexion, "SELECT * FROM productosMas_Vendidos");
 
 ?>
 

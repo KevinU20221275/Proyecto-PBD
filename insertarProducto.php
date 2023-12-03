@@ -1,5 +1,5 @@
 <?php 
-require('conexion.bd.php');
+require('./config/conexion.bd.php');
 if (empty($_POST['NombreProducto']) || empty($_POST['Descripcion'])){
     echo "Por favor llene los campos Correspondientes";
 } else {

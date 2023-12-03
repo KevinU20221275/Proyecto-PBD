@@ -34,13 +34,13 @@ if (!empty($_POST)){
             $token = generarToken();
             if(!registrarUsuario([$usuario, $pass_hash, $token, $id], $conexion)){
                 $errors[] = "Error al registrar Usuario";
-                header("location: ..index.php");
             }
         }else {
             $errors[] = "Error al registrar Cliente";
         }
         
     } 
+    header("Location: ../index.php");
 }
 ?>
 

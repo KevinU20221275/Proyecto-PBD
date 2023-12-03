@@ -1,36 +1,7 @@
-<?php 
-require('../config/config.php');
+<?php
 require('../config/conexion.bd.php');
+require('../config/config.php');
 
-$id = isset($_GET['id']) ? $_GET['id'] : '';
-$token = isset($_GET['token']) ? $_GET['token'] : '';
-
-if ($id == '' || $token == '') {
-    echo 'No se pudo procesar la peticion';
-    exit;
-} else {
-    $token_tmp = hash_hmac('sha1', $id, KEY_TOKEN);
-    if ($token === $token_tmp) {
-        $query = mysqli_query($conexion, "SELECT COUNT(id) FROM `Producto` WHERE id=$id");
-        $result = mysqli_num_rows($query);
-        if ($result > 0) {
-            $query = mysqli_query($conexion, "SELECT * FROM `Producto` WHERE id=$id LIMIT 1");
-            $data = mysqli_fetch_array($query);
-            $nombreProducto = $data['Nombre'];
-            $descripcion = $data['Descripcion'];
-            $precio = $data['Precio'];
-            $imagen = $data['imagen'];
-            $descuento = $data['Descuento'];
-            $precioDescuento = $precio - (($precio * $descuento) / 100);
-        } else {
-            # code...
-        };
-    } else {
-        echo 'No se pudo procesar la peticion';
-        exit;
-    };
-    
-};
 ?>
 
 <!DOCTYPE html>
@@ -43,9 +14,10 @@ if ($id == '' || $token == '') {
     <link rel="stylesheet" href="../assets/CSS/theme.css">
     <!--==================== UNICONS ====================-->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-    <title>Tienda Online</title>
+    <title>Taza y Tradicion</title>
 </head>
 <body class="body">
+    <!--=============== NAV ==============-->
     <header class="header" id="header">
         <nav class="nav contenedor">
             <a href="#" class="nav__logo">
@@ -114,36 +86,18 @@ if ($id == '' || $token == '') {
         </nav>
     </header>
 
-    <main class="mt-md-5">
-        <div class="container pt-md-4">
-            <div class="row container d-flex space-around">
-                <div class="col-md-6 order-md-1">
-                    <img src="data:image/jpg;base64, <?php echo base64_encode($data['imagen']) ?>" alt="">
-                </div>
-                <div class="col-md-6 order-md-2">
-                    <h2><?php echo $nombreProducto; ?></h2>
-                    <?php if($descuento > 0) { ?>
-                        <p><del>$ <?php echo number_format($precio,2,'.',',' );?></del></p>
-                        <h2>
-                            $ <?php echo number_format($precioDescuento,2,'.',',' );?>
-                            <small class="text-success"><?php echo $descuento; ?>% de Descuento</small>
-                        </h2>
-                    <?php } else { ?>
-                        <h2>$ <?php echo number_format($precio,2,'.',',' );?></h2>
-                    <?php } ?>
-                    <p class="lead">
-                        <?php echo $descripcion; ?>
-                    </p>
-                    <div class="d-grid gap-3 col-10 mx-auto">
-                        <button class="btn btn-primary" type="button">Comprar Ahora</button>
-                        <button class="btn btn-outline-success" type="button" onclick="addProducto(<?php echo $id; ?>,
-                        '<?php echo $token; ?>')">Agregar al Carrito</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+    <h1 class="text-center">Todos los Productos</h1>
+
+    <section class="container" id="productosDestacados">
+        <h3 class="title-section-products">Destacados</h3>
+        <?php include('../modulos/productosDestacados.php')?>
+    </section>
+
     
+    <!--==================== SCROLL TOP ====================-->
+    <a href="#" class="scrollup" id="scroll-up">
+        <i class="uil uil-arrow-up scrollup__icon"></i>
+    </a>
     
 
     <script src="../assets/JS/index.js"></script>
@@ -159,8 +113,7 @@ if ($id == '' || $token == '') {
                 method: 'POST',
                 body: formData,
                 mode: 'cors'
-            })
-            .then(res => res.json())
+            }).then(res => res.json())
             .then(data => {
                 if(data.ok){
                     let indicador = document.getElementById("num_cart")

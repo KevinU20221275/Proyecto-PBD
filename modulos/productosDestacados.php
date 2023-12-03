@@ -1,5 +1,5 @@
 <?php
-$query = mysqli_query($conexion, "SELECT * FROM `Producto`");
+$query = mysqli_query($conexion, "SELECT * FROM `productos_vista`");
 $result = mysqli_num_rows($query);
 ?>
 
@@ -32,10 +32,10 @@ $result = mysqli_num_rows($query);
                             </div>
                             <div class="btn-group">
                                     
-                                <a href="./pages/detallesProductos.php?id=<?php echo $data['Id']; ?>&token=<?php echo
-                                hash_hmac('sha1', $data['Id'], KEY_TOKEN); ?>" class="button">Detalles</a>
+                                <a href="../pages/detallesProductos.php?id=<?php echo $data['id']; ?>&token=<?php echo
+                                hash_hmac('sha1', $data['id'], KEY_TOKEN); ?>" class="button">Detalles</a>
                                     
-                                <button class="button--white" type="button" onclick="addProducto(<?php echo $data['Id'] ?>,'<?php echo hash_hmac('sha1', $data['Id'], KEY_TOKEN); ?>')">
+                                <button class="button--white" type="button" onclick="addProducto(<?php echo $data['id'] ?>,'<?php echo hash_hmac('sha1', $data['id'], KEY_TOKEN); ?>')">
                                 <i class="uil uil-shopping-cart-alt button__icon"></i></button>
                             </div>
                         </div>

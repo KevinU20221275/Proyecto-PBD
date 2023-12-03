@@ -15,7 +15,7 @@ if (!empty($_POST)){
     $password = trim($_POST['password']);
     $repassword = trim($_POST['repassword']);
 
-    if (campoNulo([$nombres, $apellidos, $email, $telefono, $direccion, $estatus, $fecha_alta, $password, $repassword])){
+    if (campoNulo([$nombres, $apellidos, $email, $telefono, $direccion, $fecha_alta, $password, $repassword])){
         $errors []= "Debe llenar todos los campos";
     };
 
@@ -34,13 +34,15 @@ if (!empty($_POST)){
             $token = generarToken();
             if(!registrarUsuario([$usuario, $pass_hash, $token, $id], $conexion)){
                 $errors[] = "Error al registrar Usuario";
+            } else {
+                header("Location: ../index.php");
             }
         }else {
             $errors[] = "Error al registrar Cliente";
         }
         
     } 
-    header("Location: ../index.php");
+    
 }
 ?>
 
@@ -57,14 +59,14 @@ if (!empty($_POST)){
 
     <!--==================== UNICONS ====================-->
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.8/css/line.css">
-    <title>Nav</title>
+    <title>Taza y Tradicion</title>
 </head>
 <body class="body">
     
 
     <main class=" mt-5 mb-md-4 pt-md-5">
         <div class="container ">
-            <h2>Datos del Cliente</h2>
+            <h2>Registro de Cliente</h2>
             <?php mostrarErrores($errors); ?>
             <form action="registro.php" class="row g-3" method="post" autocomplete="off">
                 <div class="col-md-6">
@@ -84,7 +86,7 @@ if (!empty($_POST)){
                     <input type="tel" name="telefono" id="telefono" class="form-control" requireda>
                 </div>
                 <div class="col-md-6">
-                    <label for="direccion">Direccion</label>
+                    <label for="direccion"><span class="text-danger">*</span>Direccion</label>
                     <input type="text" name="direccion" id="direccion" class="form-control">
                 </div>
                 <div class="col-md-6">
@@ -112,7 +114,7 @@ if (!empty($_POST)){
     </a>
     
 
-    <script src="..assets/JS/index.js"></script>
+    <script src="../assets/JS/index.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

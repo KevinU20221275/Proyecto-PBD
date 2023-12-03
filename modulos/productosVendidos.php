@@ -1,6 +1,6 @@
 <?php
 
-$queryMasVendidos = mysqli_query($conexion, "SELECT * FROM productosMas_Vendidos");
+$queryMasVendidos = mysqli_query($conexion, "SELECT * FROM vw_productosMas_Vendidos");
 
 ?>
 

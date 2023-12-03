@@ -1,5 +1,5 @@
 <?php
-$query = mysqli_query($conexion, "SELECT * FROM `productos_vista`");
+$query = mysqli_query($conexion, "SELECT * FROM `vw_productos_destacados`");
 $result = mysqli_num_rows($query);
 ?>
 

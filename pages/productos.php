@@ -90,7 +90,7 @@ require('../config/config.php');
 
     <section class="container" id="productosDestacados">
         <h3 class="title-section-products">Destacados</h3>
-        <?php include('../modulos/productosDestacados.php')?>
+        <?php include('../modulos/todosProductos.php')?>
     </section>
 
     

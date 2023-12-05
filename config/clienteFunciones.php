@@ -22,16 +22,16 @@ function generarToken(){
 
 
 function registrarClientes(array $datos, $conexion){
-    $query = $conexion->prepare("INSERT INTO cliente (Nombres, Apellidos, Email, Telefono,Direccion, fecha_Registro) VALUES (?, ?, ?, ?,?,?)");
+    $query = $conexion->prepare("CALL sp_InsertarCliente (?, ?, ?, ?,?,?)");
     $query->bind_param("ssssss", ...$datos);
     if($query->execute()){
-        return $id = $conexion->insert_id;
+        return $id = $conexion->query("SELECT @id_cliente")->fetch_row()[0];
     }
     return 0;
 }
 
 function registrarUsuario(array $datos, $conexion){
-    $query = $conexion->prepare("INSERT INTO Usuarios (NombreUsuario, password, token, id_cliente) VALUES (?, ?, ?, ?)");
+    $query = $conexion->prepare("CALL sp_InsertarUsuario (?, ?, ?, ?)");
     $query->bind_param("ssss", ...$datos);
     if($query->execute()){
         return true;

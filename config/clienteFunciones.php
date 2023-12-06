@@ -67,16 +67,22 @@ function mostrarErrores(array $errors){
 }
 
 function loginUsuario($usuario, $password, $conexion, $proceso){
-    $query = $conexion->prepare("SELECT id, NombreUsuario, password, id_cliente FROM Usuarios WHERE NombreUsuario LIKE ? LIMIT 1");
-    $usuario = "%" . $usuario . "%";
+    $sql = "CALL sp_LoginUsuario (?, @user_id, @user_name, @hashed_password, @user_cliente, @contador);";
+    $query = $conexion->prepare($sql);
     $query->bind_param("s", $usuario);
     $query->execute();
-    $query->store_result();
 
-    if ($query->num_rows > 0){
-        $query->bind_result($id, $NombreUsuario, $hashed_password, $id_cliente);
-        $query->fetch();
+    $result = $conexion->query("SELECT @user_id AS user_id, @user_name as user_name,@hashed_password AS hashed_password ,@user_cliente AS user_cliente,@contador AS contador");
+    $row = $result->fetch_assoc();
 
+    $contador = isset($row['contador']) ? $row['contador'] : 0;
+    $id = $row['user_id'];
+    $NombreUsuario = $row['user_name'];
+    $hashed_password = $row['hashed_password'];
+    $id_cliente = $row['user_cliente'];
+
+
+    if ($contador > 0){
         if (password_verify($password, $hashed_password)){
             $_SESSION['user_id'] = $id;
             $_SESSION['user_name'] = $NombreUsuario;
@@ -92,7 +98,10 @@ function loginUsuario($usuario, $password, $conexion, $proceso){
         }
     } else {
         return 'Usuario o Contraseña incorrectos';
+        $query->close();
     }
+    
+    $conexion->close();
 }
 
 ?>

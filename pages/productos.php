@@ -30,11 +30,7 @@ require('../config/config.php');
                             <i class="uil uil-estate nav__icon"></i> Home
                         </a>
                     </li>
-                    <li class="nav__item">
-                        <a href="#skills" class="nav__link">
-                            <i class="uil uil-file-alt nav__icon"></i> Productos
-                        </a>
-                    </li>
+                    
             <?php 
                 $usuario = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : null;
                 ?>

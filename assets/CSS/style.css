@@ -168,10 +168,12 @@ tbody,th,td,tr,input {
     background-color: var(--body-color);
 }
 
-.card-title {
+.card__title {
     color: var(--title-color);
     font-weight: 500;
+    font-size: 1.5rem;
 }
+
 
 .title {
     font-size: var(--h2-font-size);
@@ -492,7 +494,10 @@ tbody,th,td,tr,input {
 	box-shadow: 0 0 2px var(--text-color);
     overflow: hidden;
 }
-
+.card-product p {
+    margin: 0 !important;
+    padding: 0 !important;
+}
 .container-img {
 	position: relative;
 }
@@ -514,6 +519,7 @@ tbody,th,td,tr,input {
 
 .text-discount {
     color: var(--text-color-discount);
+    font-size: 1.4rem;
 }
 
 .card-product:hover .discount {
@@ -523,6 +529,11 @@ tbody,th,td,tr,input {
 .btn-group {
     display: flex;
     justify-content: space-between;
+}
+
+.btn-group a {
+    margin-bottom: 0;
+    padding-bottom: 0;
 }
 
 /*============= MODAL ============*/
@@ -551,7 +562,7 @@ tbody,th,td,tr,input {
 .button:hover {
     background-color: var(--first-color-alt);
 }
-  
+
 .button__icon {
     font-size: 1.5rem;
 }
@@ -614,6 +625,7 @@ tbody,th,td,tr,input {
     max-width: 400px;
     margin: auto;
 }
+
 
 
 

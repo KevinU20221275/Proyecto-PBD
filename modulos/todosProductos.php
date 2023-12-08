@@ -19,15 +19,15 @@ $result = mysqli_num_rows($query);
                         </div>
                         <div>
                             <div>
-                                <h3 class="card-title"><?php echo $data['Nombre'] ?></h3>
+                                <h3 class="card__title"><?php echo $data['Nombre'] ?></h3>
                                 <?php if($data['Descuento'] > 0) { ?>
                                     <p><del>$ <?php echo number_format($data['Precio'],2,'.',',' );?></del></p>
                                     <h2 class="text-discount">
                                         $ <?php echo number_format($precioDescuento = $data['Precio'] - (($data['Precio'] * $data['Descuento']) / 100),2,'.',',' );?>
                                     </h2>
                                 <?php } else { ?>
-                                    <span style='padding: 10px;'></span>
-                                    <h2>$ <?php echo number_format($data['Precio'],2,'.',',' );?></h2>
+                                    <span></span>
+                                    <h2 style="margin-top:32px; font-size:1.4rem;">$ <?php echo number_format($data['Precio'],2,'.',',' );?></h2>
                                 <?php } ?>
                             </div>
                             <div class="btn-group">

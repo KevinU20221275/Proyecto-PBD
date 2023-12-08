@@ -41,6 +41,7 @@ if (is_array($datos)){
                 $sql_insert->execute();
 
             }
+            header('Location: ../index.php');
              
         } 
         unset($_SESSION['carrito']); 

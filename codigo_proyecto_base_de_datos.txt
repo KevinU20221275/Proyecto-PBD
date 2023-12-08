@@ -1,0 +1,517 @@
+-- CREACION DE LA BASE DE DATOS
+CREATE DATABASE Tienda_Online;
+
+-- Crear tabla CATEGORIA
+CREATE TABLE Categoria (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(80) NOT NULL
+);
+
+-- Crear tabla PRODUCTO
+CREATE TABLE PRODUCTO (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(200) NOT NULL,
+    Descripcion VARCHAR(200),
+    Precio FLOAT NOT NULL,
+    Descuento TINYINT(3),
+    id_categoria INT,
+    imagen LONGBLOB,
+    FOREIGN KEY (id_categoria) REFERENCES Categoria(Id) ON UPDATE CASCADE
+);
+
+-- Crear tabla ADMINISTRADOR
+CREATE TABLE Administrador (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Nombre VARCHAR(100) NOT NULL,
+    Apellidos VARCHAR(100) NOT NULL,
+    Email VARCHAR(20) NOT NULL,
+    Telefono VARCHAR(20) NOT NULL,
+    Direccion VARCHAR(100) NOT NULL,
+    NombreUsuario VARCHAR(50) UNIQUE,
+    Password VARCHAR(10) NOT NULL,
+    imagen BLOB
+);
+
+-- Crear tabla Cliente
+CREATE TABLE Cliente (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Nombres VARCHAR(80) NOT NULL,
+    Apellidos VARCHAR(80) NOT NULL,
+    Email VARCHAR(50) NOT NULL,
+    Telefono VARCHAR(20),
+    Direccion VARCHAR(100) NOT NULL,
+    Fecha_Registro DATETIME
+);
+
+-- Crear tabla USUARIOS
+CREATE TABLE Usuarios (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    NombreUsuario VARCHAR(30) UNIQUE,
+    Password VARCHAR(120) NOT NULL,
+    Token VARCHAR(40),
+    Id_cliente INT,
+    imagen LONGBLOB,
+    FOREIGN KEY (Id_cliente) REFERENCES Cliente(Id) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+-- Crear tabla COMPRA
+CREATE TABLE Compra (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Id_transaccion VARCHAR(20),
+    Fecha DATE,
+    Status VARCHAR(20),
+    Email VARCHAR(50),
+    Direccion VARCHAR(100),
+    Id_cliente VARCHAR(20),
+    Total DECIMAL(10,2)
+);
+
+-- Crear tabla DETALLE DE COMPRA
+CREATE TABLE Detalle_Compra (
+    Id INT PRIMARY KEY AUTO_INCREMENT,
+    Id_compra INT,
+    Id_producto INT,
+    NombreProducto VARCHAR(200),
+    Precio DECIMAL(10,2),
+    Cantidad INT,
+    FOREIGN KEY (Id_compra) REFERENCES Compra(Id) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (Id_producto) REFERENCES Producto(Id) ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+========== procesos pagina ==========
+DELIMITER //
+CREATE PROCEDURE sp_ActualizarCompra_Pagina(
+    IN p_id_Compra INT,
+    IN p_email VARCHAR(50),
+    IN p_direccion VARCHAR(100)
+)
+BEGIN
+    UPDATE compra SET email=p_email, direccion=p_direccion WHERE id=p_id_Compra;
+END //
+
+-- VISTAS PARA LA PAGINA
+DELIMITER //
+CREATE VIEW vw_productos_vista AS
+SELECT id,Nombre,Descripcion,Precio,Descuento,id_categoria AS Categoria, imagen FROM producto
+//
+
+DELIMITER //
+CREATE VIEW vw_productos_destacados AS
+SELECT id,Nombre,Descripcion,Precio,Descuento,id_categoria AS Categoria, imagen FROM producto LIMIT 4
+//
+
+DELIMITER //
+create VIEW vw_productosMas_Vendidos AS
+SELECT a.Id,a.Nombre,a.Precio,a.Descuento, a.imagen, COUNT(b.Id_producto) as cantidad 
+FROM `producto` as a 
+inner join `detalle_compra` as b 
+on a.id=b.Id_producto 
+GROUP by a.Nombre, b.Id_producto 
+ORDER by count(b.Id_producto) 
+DESC LIMIT 4
+//
+
+
+-- PROCEDIMIENTOS ALMACENADOS
+DELIMITER //
+CREATE PROCEDURE sp_InsertarProducto(
+    IN p_Nombre VARCHAR(200),
+    IN p_Descripcion VARCHAR(200),
+    IN p_Precio FLOAT,
+    IN p_Descuento TINYINT,
+    IN p_IdCategoria INT,
+    IN p_Imagen LONGBLOB
+)
+BEGIN
+    INSERT INTO PRODUCTO (Nombre, Descripcion, Precio, Descuento, id_categoria, imagen)
+    VALUES (p_Nombre, p_Descripcion, p_Precio, p_Descuento, p_IdCategoria, p_Imagen);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_InsertarUsuario(
+    IN p_NombreUsuario VARCHAR(30),
+    IN p_Password VARCHAR(120),
+    IN p_Token VARCHAR(40),
+    IN p_IdCliente INT
+)
+BEGIN
+    INSERT INTO Usuarios (NombreUsuario, Password, Token, Id_cliente)
+    VALUES (p_NombreUsuario, p_Password, p_Token, p_IdCliente);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_InsertarCompra(
+    IN p_IdTransaccion VARCHAR(20),
+    IN p_Fecha DATE,
+    IN p_Status VARCHAR(20),
+    IN p_Email VARCHAR(50),
+    IN p_Direccion VARCHAR(200),
+    IN p_IdCliente VARCHAR(20),
+    IN p_Total DECIMAL(10,2)
+)
+BEGIN
+    INSERT INTO Compra (Id_transaccion, Fecha, Status, Email,Direccion, Id_cliente, Total)
+    VALUES (p_IdTransaccion, p_Fecha, p_Status, p_Email,p_Direccion, p_IdCliente, p_Total);
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE sp_InsertarDetalleCompra(
+    IN p_IdCompra INT,
+    IN p_IdProducto INT,
+    IN p_NombreProducto VARCHAR(200),
+    IN p_Precio DECIMAL(10,2),
+    IN p_Cantidad INT
+)
+BEGIN
+    INSERT INTO Detalle_Compra (Id_compra, Id_producto, NombreProducto, Precio, Cantidad)
+    VALUES (p_IdCompra, p_IdProducto, p_NombreProducto, p_Precio, p_Cantidad);
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE sp_InsertarCategoria(
+    IN p_Nombre VARCHAR(80)
+)
+BEGIN
+    INSERT INTO categoria (Nombre)
+    VALUES (p_Nombre);
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_InsertarCliente(
+    IN p_Nombres VARCHAR(80),
+    IN p_Apellidos VARCHAR(80),
+    IN p_Email VARCHAR(50),
+    IN p_Telefono VARCHAR(20),
+    IN p_Direccion VARCHAR(100),
+    IN p_FechaRegistro DATETIME
+)
+BEGIN
+    INSERT INTO Cliente (Nombres, Apellidos, Email, Telefono, Direccion, Fecha_Registro)
+    VALUES (p_Nombres, p_Apellidos, p_Email, p_Telefono, p_Direccion, p_FechaRegistro);
+    
+    SET @id_cliente = LAST_INSERT_ID();
+END //
+DELIMITER ;
+
+
+
+CREATE PROCEDURE sp_InsertarAdministrador(
+    IN p_Nombre VARCHAR(100),
+    IN p_Apellidos VARCHAR(100),
+    IN P_Email VARCHAR(20),
+    IN p_Telefono VARCHAR(20),
+    IN p_Direccion VARCHAR(100),
+    IN p_NombreUsuario VARCHAR(50),
+    IN p_Password VARCHAR(10),
+    IN p_Imagen BLOB
+)
+BEGIN
+    INSERT INTO Administrador (Nombre, Apellidos,Email,Telefono, Direccion, NombreUsuario, Password, imagen)
+    VALUES (p_Nombre, p_Apellidos, p_Email, p_Telefono, p_Direccion, p_NombreUsuario, p_Password, p_Imagen);
+END //
+DELIMITER ;
+
+
+==== PROCESOS PARA ACTUALIZAR ======
+DELIMITER //
+CREATE PROCEDURE sp_ActualizarCliente(
+    IN p_id_cliente INT,
+    IN p_Nombres VARCHAR(80),
+    IN p_Apellidos VARCHAR(80),
+    IN p_Email VARCHAR(50),
+    IN p_Telefono VARCHAR(20),
+    IN p_Direccion VARCHAR(100)
+)
+BEGIN
+    UPDATE Cliente SET Nombres=p_Nombres, Apellidos=p_Apellidos, Email=p_Email, Telefono=p_Telefono, Direccion=p_Direccion
+     WHERE id=p_id_cliente;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_ActualizarCategoria(
+    IN p_id_categoria INT,
+    IN p_Nombre VARCHAR(80)
+)
+BEGIN
+    UPDATE categoria SET Nombre=p_Nombre WHERE id=p_id_categoria;
+END //
+DELIMITER ;
+
+
+DELIMITER //
+CREATE PROCEDURE sp_ActualizarAdministrador(
+    IN p_id_administrador INT,
+    IN p_Nombre VARCHAR(100),
+    IN p_Apellidos VARCHAR(100),
+    IN P_Email VARCHAR(20),
+    IN p_Telefono VARCHAR(20),
+    IN p_Direccion VARCHAR(100),
+    IN p_NombreUsuario VARCHAR(50),
+    IN p_Password VARCHAR(10)
+)
+BEGIN
+    UPDATE Administrador SET Nombre=p_Nombre, Apellidos=p_Apellidos, Email=p_Email,Telefono=p_Telefono, Direccion=p_Direccion, NombreUsuario=p_NombreUsuario, Password=p_Password WHERE id=p_id_administrador;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_ActualizarProducto(
+    IN p_id_producto INT,
+    IN p_Nombre VARCHAR(200),
+    IN p_Descripcion VARCHAR(200),
+    IN p_Precio FLOAT,
+    IN p_Descuento TINYINT,
+    IN p_idCategoria INT
+)
+BEGIN
+    UPDATE PRODUCTO SET Nombre=p_Nombre, Descripcion=p_Descripcion, Precio=p_Precio, Descuento=p_Descuento, id_categoria=p_idCategoria WHERE id=p_id_producto;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_ActualizarCompra_CRUD(
+    IN p_id_Compra INT,
+    IN p_status VARCHAR(20),
+    IN p_email VARCHAR(50),
+    IN p_direccion VARCHAR(100),
+    IN p_total DECIMAL(10,2)
+)
+BEGIN
+    UPDATE compra SET staus=p_status, email=p_email, direccion=p_direccion, total=p_total WHERE id=p_id_Compra;
+END //
+
+DELIMITER //
+CREATE PROCEDURE sp_ActualizarDetalleCompra(
+    IN p_id_detalleCompra INT,
+    IN p_Precio DECIMAL(10,2),
+    IN p_Cantidad INT
+)
+BEGIN
+    UPDATE detalle_compra SET Precio=p_Precio, Cantidad=p_Cantidad WHERE id=p_id_detalleCompra;
+END //
+DELIMITER;
+
+================ PROCESOS PARA ELIMINAR =============
+DELIMITER //
+CREATE PROCEDURE sp_EliminarAdministrador(
+    IN p_id_administrador INT
+)
+BEGIN
+    DELETE FROM administrador WHERE id=p_id_administrador;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_EliminarCategoria(
+    IN p_id_categoria INT
+)
+BEGIN
+    DELETE FROM categoria WHERE id=p_id_categoria;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_EliminarCliente(
+    IN p_id_cliente INT
+)
+BEGIN
+    DELETE FROM cliente WHERE id=p_id_cliente;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_EliminarCompra(
+    IN p_id_compra INT
+)
+BEGIN
+    DELETE FROM compra WHERE id=p_id_compra;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_EliminarDetalleCompra(
+    IN p_id_detalleCompra INT
+)
+BEGIN
+    DELETE FROM detalle_compra WHERE id=p_id_detalleCompra;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_EliminarProducto(
+    IN p_id_producto INT
+)
+BEGIN
+    DELETE FROM producto WHERE id=p_id_producto;
+END //
+DELIMITER ;
+
+
+-- TRIGGER QUE CALCULA EL TOTAL EN EL REGISTRO DE COMPRA CUANDO
+-- SE MODIFICA UN REGISTRO DE DETALLE_COMPRA RELACIONADO
+DELIMITER //
+CREATE TRIGGER ActualizarTotalCompra
+AFTER UPDATE ON Detalle_Compra
+FOR EACH ROW
+BEGIN
+    DECLARE totalCompra DECIMAL(10,2);
+
+    -- Calcula el nuevo total de la compra
+    SELECT SUM(Precio * Cantidad) INTO totalCompra
+    FROM Detalle_Compra
+    WHERE Id_compra = NEW.Id_compra;
+
+    -- Actualiza el campo Total en la tabla Compra
+    UPDATE Compra
+    SET Total = totalCompra
+    WHERE Id = NEW.Id_compra;
+END //
+DELIMITER ;
+
+
+-- VISTAS PARA EL CRUD
+DELIMITER //
+CREATE VIEW vw_categoria_CRUD AS
+SELECT id, Nombre FROM categoria;
+//
+
+DELIMITER //
+create VIEW vw_productos_CRUD AS
+SELECT p.id, p.Nombre, p.Descripcion, p.Precio,p.Descuento,c.Nombre as Categoria, p.imagen FROM producto AS p
+INNER JOIN categoria AS c ON p.id_categoria=c.id
+ORDER BY p.id;
+//
+
+DELIMITER //
+create view vw_compras_CRUD AS
+SELECT a.id,a.id_transaccion,a.Fecha,a.Status,a.Email,a.Direccion,b.Nombres AS Cliente,a.Total FROM compra AS a INNER JOIN cliente AS b
+ON a.id_cliente=b.id;
+//
+
+DELIMITER //
+CREATE VIEW vw_detalleCompra_CRUD AS
+SELECT dc.id, dc.id_compra, dc.id_producto,p.Nombre AS NombreProducto, dc.Precio, dc.Cantidad FROM detalle_compra AS dc 
+INNER JOIN producto AS p
+ON dc.id_producto=p.id;
+//
+
+DELIMITER //
+CREATE VIEW vw_cliente_CRUD AS
+SELECT id, Nombres, Apellidos, Email, Telefono, Direccion,Fecha_Registro FROM cliente;
+//
+
+DELIMITER //
+CREATE VIEW vw_administrador_CRUD AS
+SELECT id, Nombre, Apellidos, Email,Telefono,Direccion, NombreUsuario, Password, imagen FROM administrador;
+//
+
+
+-- DATOS
+/* NOTA: varios registros podrian dar problemas de visualizacion en el CRUD esto
+por que varias inserciones a las tablas de la base de datos se hacen desde la pagina
+algunas usando funciones HASH como por ejemplo el registro de Usuario los usuarios insertados
+directamente desde aca no funcionaran en el login ya que su contraseña se encripta desde la pagina de registro 
+y se valida con una funcion de PHP al intentar ingresar */
+-- Categoria
+CALL sp_InsertarCategoria ("Cafe Moca");
+CALL sp_InsertarCategoria ("Expreso Americano");
+CALL sp_InsertarCategoria ("Capuchino");
+CALL sp_InsertarCategoria ("Macchiato");
+CALL sp_InsertarCategoria ("Cafe Latte");
+
+-- Administrador
+CALL sp_InsertarAdministrador("Kevin", "Montano", "70070707","kev@gmail.com", "Berlin","Kev01","1234",NULL);
+CALL sp_InsertarAdministrador("leonardo", "juarez", "78970707","leojuaz@gmail.com", "Berlin","leo01","1234",NULL);
+CALL sp_InsertarAdministrador("Katerine", "Morales", "22220707","kateMora@gmail.com", "Alegria","Katy01","1234",NULL);
+CALL sp_InsertarAdministrador("Eduardo", "Perez", "70909007","eduPerez@gmail.com", "San miguel","edu01","1234",NULL);
+CALL sp_InsertarAdministrador("Maria", "Marroqui", "70907627","maria@gmail.com", "Alegria","mari01","1234",NULL);
+
+-- clientes
+CALL sp_InsertarCliente("Reynaldo", "Cardoza", "rey@gmail.com", "20227823","San miguel","2023-12-03 02:53:41");
+CALL sp_InsertarCliente("Cristiano", "Ronaldo", "cr7@gmail.com", "20227823","San miguel","2023-12-03 02:53:41");
+CALL sp_InsertarCliente("Leonel", "Messi", "leo@gmail.com", "20007823","Barrio el Centro","2023-12-03 02:53:41");
+CALL sp_InsertarCliente("Antoine", "Griezman", "griz@gmail.com", "20276223","Colonia los  angeles","2023-12-03 02:53:41");
+CALL sp_InsertarCliente("Enzo", "Fernandez", "enzo@gmail.com", "21892323","El triunfo","2023-12-03 02:53:41");
+
+-- usuarios
+CALL sp_InsertarUsuario("reyCar","1234","1eidskaddee","1");
+CALL sp_InsertarUsuario("cr7","1234","18jjd91i3ee","2");
+CALL sp_InsertarUsuario("goat","1234","18jjd91skeikake","3");
+CALL sp_InsertarUsuario("griz07","1234","18jjd9sjjake1i3ee","4");
+CALL sp_InsertarUsuario("enzof","1234","ekdkiakejd91i3ee","5");
+
+
+-- Productos
+CALL sp_InsertarProducto("Cafe Australiano","Un capuchino más suave con una espuma blanca, menos intenso que un espresso pero más fuerte que un latte.",2.00,0,2,Null);
+CALL sp_InsertarProducto("Cafe Irish","Tiene una exquisita combinación de whisky -preferentemente de Irlanda-, azúcar, café y crema de leche.",3.50,20,4,Null);
+CALL sp_InsertarProducto("Cafe Helado","Es una combinación de espresso caliente y leche con un poco de hielo",1.00,0,1,Null);
+CALL sp_InsertarProducto("Cafe Ingles","Una poderosa combinacion de partes iguales de espresso y leche entera.",1.25,5,5,Null);
+CALL sp_InsertarProducto("Cafe Viena","un combinado delicioso de café, azúcar y nata montada, o más bien semimontada",2.25,10,3,Null);
+
+-- Compra
+CALL sp_InsertarCompra ("02030394","2023-12-04","COMPLETED","rey@gmail.com","San Miguel",1,2.00);
+CALL sp_InsertarCompra ("802030394","2023-12-04","COMPLETED","cr7@gmail.com","San Miguel",1,4.00);
+CALL sp_InsertarCompra ("83949030394","2023-12-04","COMPLETED","cr7@gmail.com","San Miguel",1,2.00);
+CALL sp_InsertarCompra ("839490er30394","2023-12-04","COMPLETED","enzo@gmail.com","El triunfo",1,2.80);
+CALL sp_InsertarCompra ("8394wkqk30394","2023-12-04","COMPLETED","leo@gmail.com","Barrio el Centro",1,2.00);
+
+-- detalle compra
+CALL sp_InsertarDetalleCompra(1,1,"Cafe Australiano",2.00,1);
+CALL sp_InsertarDetalleCompra(2,1,"Cafe Australiano",2.00,2);
+CALL sp_InsertarDetalleCompra(3,3,"Cafe Helado",1.00,2);
+CALL sp_InsertarDetalleCompra(4,2,"Cafe Helado",2.80,1);
+CALL sp_InsertarDetalleCompra(5,3,"Cafe Ingles",1.19,1);
+
+
+
+DELIMITER //
+CREATE PROCEDURE sp_UsuarioExiste(
+    IN p_usuario VARCHAR(255),
+    OUT p_contador INT
+)
+BEGIN
+    SELECT COUNT(id)
+    INTO p_contador
+    FROM Usuarios
+    WHERE NombreUsuario = p_usuario
+    LIMIT 1;
+END //
+DELIMITER ;
+
+DELIMITER //
+CREATE PROCEDURE sp_LoginUsuario(
+    IN p_NombreUsuario VARCHAR(30),
+    OUT p_id_user INT,
+    OUT p_user_name VARCHAR(30),
+    OUT p_hashed_password VARCHAR(120),
+    OUT p_id_cliente INT,
+    OUT p_contador INT
+)
+BEGIN
+    SELECT COUNT(id), id, NombreUsuario, Password, id_cliente
+    INTO p_contador, p_id_user, p_user_name, p_hashed_password, p_id_cliente
+    FROM Usuarios
+    WHERE NombreUsuario = p_NombreUsuario
+    LIMIT 1;
+END //
+DELIMITER ;
+
+call sp_LoginUsuario ('kevinPirlo77',@user_id, @user_name,@hashed_password,@user_cliente,@contador);
+
+select @user_id, @user_name,@hashed_password,@user_cliente,@contador
+
+
+
+
+call sp_LoginUsuario ('kilomortale', '1234',@user_id, @user_name,@user_cliente);
+
+SELECT @user_id,@user_name,@user_cliente

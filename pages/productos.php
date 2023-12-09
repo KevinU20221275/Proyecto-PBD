@@ -89,6 +89,28 @@ require('../config/config.php');
         <?php include('../modulos/todosProductos.php')?>
     </section>
 
+    <!--==================== FOOTER ====================-->
+    <footer class="footer">
+        <div class="footer__bg">
+            <div class="footer__container container">
+                <div class="footer__socials">
+                    <a href="#" target="_blank" class="footer__social" title="Link a Facebook">
+                        <i class="uil uil-facebook-f"></i>
+                    </a>
+
+                    <a href="#" target="_blank" class="footer__social" title="Link a Instagran">
+                        <i class="uil uil-instagram"></i>
+                    </a>
+
+                    <a href="#" target="_blank" class="footer__social" title="Link a Twitter">
+                        <i class="uil uil-twitter"></i>
+                    </a>
+                </div>
+            </div>
+            <p class="footer__copy">&copy; Diseño Web Adaptable</p>
+        </div>
+    </footer>
+
     
     <!--==================== SCROLL TOP ====================-->
     <a href="#" class="scrollup" id="scroll-up">

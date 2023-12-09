@@ -626,6 +626,39 @@ tbody,th,td,tr,input {
     margin: auto;
 }
 
+/*==================== FOOTER ====================*/
+.footer {
+    padding-top: 2rem;
+  }
+  
+  .footer__container {
+    text-align: center;
+  }
+  
+  .footer__bg {
+    background-color: var(--first-color-second);
+    padding: 2rem 0  3rem;
+  }
+  
+  .footer__social {
+    font-size: 2rem;
+    margin-right: var(--mb-1-5);
+  }
+  
+  .footer__social:hover {
+    color: var(--first-color-lighter);
+  }
+  
+  .footer__copy {
+    font-size: var(--font-medium);
+    text-align: center;
+    color: var(--text-color-light);
+    margin-top: var(--mb-3);
+  }
+  
+  .footer__social {
+    color: #fff;
+  }
 
 
 

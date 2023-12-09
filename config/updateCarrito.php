@@ -35,8 +35,8 @@ function add($id, $cantidad){
         if(isset($_SESSION['carrito']['productos'][$id])){
             $_SESSION['carrito']['productos'][$id] = $cantidad;
 
-            $conexion = new mysqli("localhost","root","","tienda_Online","3307");
-            $query = mysqli_query($conexion, "SELECT Precio, Descuento FROM `Producto` WHERE Id=$id LIMIT 1");
+            $conexion = new mysqli("localhost","root","","tienda_Online","3306");
+            $query = mysqli_query($conexion, "SELECT Precio, Descuento FROM `vw_productos_vista` WHERE id=$id LIMIT 1");
             $data = mysqli_fetch_array($query);
             $precio = $data['Precio'];
             $descuento = $data['Descuento'];

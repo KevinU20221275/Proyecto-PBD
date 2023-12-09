@@ -6,7 +6,7 @@ $lista_productos = array();
 
 if ($productos != null) {
     foreach ($productos as $clave => $cantidad){
-        $query = mysqli_query($conexion, "SELECT Id, Nombre, Precio, Descuento,$cantidad AS Cantidad FROM `Producto` WHERE Id=$clave");
+        $query = mysqli_query($conexion, "SELECT id, Nombre, Precio, Descuento,$cantidad AS Cantidad FROM `vw_productos_vista` WHERE id=$clave");
         $lista_productos[] = mysqli_fetch_array($query);
     }
 } else {
@@ -115,7 +115,7 @@ if ($productos != null) {
                             } else {
                                 $total = 0;
                                 foreach($lista_productos as $producto){
-                                    $_id = $producto['Id'];
+                                    $_id = $producto['id'];
                                     $nombre = $producto['Nombre'];
                                     $precio = $producto['Precio'];
                                     $descuento = $producto['Descuento'];

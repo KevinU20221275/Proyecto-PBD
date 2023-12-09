@@ -11,10 +11,10 @@ if ($id == '' || $token == '') {
 } else {
     $token_tmp = hash_hmac('sha1', $id, KEY_TOKEN);
     if ($token === $token_tmp) {
-        $query = mysqli_query($conexion, "SELECT COUNT(id) FROM `Producto` WHERE id=$id");
+        $query = mysqli_query($conexion, "SELECT COUNT(id) FROM `vw_productos_vista` WHERE id=$id");
         $result = mysqli_num_rows($query);
         if ($result > 0) {
-            $query = mysqli_query($conexion, "SELECT * FROM `Producto` WHERE id=$id LIMIT 1");
+            $query = mysqli_query($conexion, "SELECT * FROM `vw_productos_vista` WHERE id=$id LIMIT 1");
             $data = mysqli_fetch_array($query);
             $nombreProducto = $data['Nombre'];
             $descripcion = $data['Descripcion'];
@@ -59,7 +59,7 @@ if ($id == '' || $token == '') {
                         </a>
                     </li>
                     <li class="nav__item">
-                        <a href="#skills" class="nav__link">
+                        <a href="productos.php" class="nav__link">
                             <i class="uil uil-file-alt nav__icon"></i> Productos
                         </a>
                     </li>

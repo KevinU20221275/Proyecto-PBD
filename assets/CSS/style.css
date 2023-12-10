@@ -640,6 +640,12 @@ textarea {
     margin: auto;
 }
 
+.registro {
+    background-image: url('../images/fondo-registro.png');
+    background-position: center;
+    background-size: cover;
+}
+
 /*==================== FOOTER ====================*/
 .footer {
     padding-top: 2rem;

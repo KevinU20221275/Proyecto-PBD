@@ -92,7 +92,7 @@ $result = mysqli_num_rows($query);
         </nav>
     </header>
 
-    <h1 class="text-center mt-5 pt-5">Todos los Productos</h1>
+    <h1 class="text-center mt-5 pt-5">Compras mas Recientes</h1>
 
     <section class="container mt-4" id="productosDestacados">
         <div class="row">
@@ -103,9 +103,9 @@ $result = mysqli_num_rows($query);
                 <div class="col-sm-6 mb-3 ">
                     <div class="card h-100">
                         <div class="card-body">
-                            <h6 class="card-title">Compra: <?php echo $data['Id_transaccion'] ?> </h6>
+                            <h6 class="card-title">ID Transaccion: <?php echo $data['Id_transaccion'] ?> </h6>
                             <label for="">Fecha: <?php echo $data['Fecha'] ?></label>
-                            <p class="card-text"><strong>Cliente: </strong><?php echo $data['Cliente'] ?></p>
+                            <p class="card-text p-0 m-0"><strong>Cliente: </strong><?php echo $data['Cliente'] ?></p>
                             <p><strong>Direccion: </strong><?php echo $data['Direccion'] ?></p>
                             <ul class="list-group list-group-flush">
                             <?php

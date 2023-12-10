@@ -32,8 +32,7 @@ if ($id == '' || $token == '') {
     
 };
 
-$queryComentarios = mysqli_query($conexion, "SELECT B.Nombre AS Producto,C.Nombres AS Cliente,B.id AS ProductoId,A.Comentario,A.Calificacion FROM `comentarios_clien_produc` AS A INNER JOIN producto AS B
-                ON A.id_producto=B.id INNER JOIN cliente AS C ON A.id_cliente=C.Id WHERE A.id_producto=$id ORDER BY A.Fecha_Registro  DESC LIMIT 3");
+$queryComentarios = mysqli_query($conexion, "SELECT * FROM vw_comentariosProductos WHERE ProductoID=$id ORDER BY Fecha DESC LIMIT 3");
 $resultComentarios = mysqli_num_rows($queryComentarios);
 
 ?>

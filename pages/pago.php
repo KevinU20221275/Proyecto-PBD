@@ -62,17 +62,20 @@ if ($productos != null) {
                             <li class="nav__item">
                                 <a href="../config/logout.php" class="dropdown-item nav__link">Cerrar Sesion</a>
                             </li>
+                            <li class="nav__item">
+                                <a href="clienteCompras.php" class="dropdown-item nav__link">Mis Compras</a>
+                            </li>
                         </ul>
                     </div>
             <?php    } else { ?>
                     <li class="nav__item">
                         <a href="registro.php" class="nav__link">
-                            <i class="uil uil-briefcase-alt nav__icon"></i> Registrarse
+                            <i class="uil uil-clipboard-alt nav__icon"></i> Registrarse
                         </a>
                     </li>
                     <li class="nav__item">
                         <a href="login.php" class="nav__link">
-                            <i class="uil uil-scenery nav__icon"></i> Entrar
+                            <i class="uil uil-signin nav__icon"></i> Entrar
                         </a>
                     </li>
                     <li class="nav__item">

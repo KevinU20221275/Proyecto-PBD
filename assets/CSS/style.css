@@ -141,6 +141,11 @@ textarea {
     background-color: #fff !important;
 }
 
+.card, .card-body, .list-group-item {
+    background-color: var(--first-color-second) !important;
+    color: var(--title-color) !important;
+}
+
 
 
 /*========== Button Dark/Light ==========*/
@@ -661,7 +666,7 @@ textarea {
   .footer__copy {
     font-size: var(--font-medium);
     text-align: center;
-    color: var(--text-color-light);
+    color: var(--first-color-lighter);
     margin-top: var(--mb-3);
   }
   

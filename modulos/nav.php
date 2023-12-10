@@ -12,12 +12,12 @@
                     </li>
                     <li class="nav__item">
                         <a href="#categorias" class="nav__link">
-                            <i class="uil uil-user nav__icon"></i> Categorias
+                            <i class="uil uil-shopping-basket nav__icon"></i> Categorias
                         </a>
                     </li>
                     <li class="nav__item">
                         <a href="./pages/productos.php" class="nav__link">
-                            <i class="uil uil-file-alt nav__icon"></i> Productos
+                            <i class="uil uil-coffee nav__icon"></i> Productos
                         </a>
                     </li>
 
@@ -39,17 +39,20 @@
                                     <li class="nav__item">
                                         <a href="./config/logout.php" class="dropdown-item nav__link">Cerrar Sesion</a>
                                     </li>
+                                    <li class="nav__item">
+                                        <a href="./pages/clienteCompras.php" class="dropdown-item nav__link">Mis Compras</a>
+                                    </li>
                                 </ul>
                             </div>
                     <?php    } else { ?>
                             <li class="nav__item">
                                 <a href="./pages/registro.php" class="nav__link">
-                                    <i class="uil uil-briefcase-alt nav__icon"></i> Registrarse
+                                    <i class="uil uil-clipboard-alt nav__icon"></i> Registrarse
                                 </a>
                             </li>
                             <li class="nav__item">
                                 <a href="./pages/login.php" class="nav__link">
-                                    <i class="uil uil-scenery nav__icon"></i> Entrar
+                                    <i class="uil uil-signin nav__icon"></i> Entrar
                                 </a>
                             </li>
                             <li class="nav__item">

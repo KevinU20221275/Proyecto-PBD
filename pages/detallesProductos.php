@@ -31,6 +31,11 @@ if ($id == '' || $token == '') {
     };
     
 };
+
+$queryComentarios = mysqli_query($conexion, "SELECT B.Nombre AS Producto,C.Nombres AS Cliente,B.id AS ProductoId,A.Comentario,A.Calificacion FROM `comentarios_clien_produc` AS A INNER JOIN producto AS B
+                ON A.id_producto=B.id INNER JOIN cliente AS C ON A.id_cliente=C.Id WHERE A.id_producto=$id ORDER BY A.Fecha_Registro  DESC LIMIT 3");
+$resultComentarios = mysqli_num_rows($queryComentarios);
+
 ?>
 
 <!DOCTYPE html>
@@ -143,7 +148,61 @@ if ($id == '' || $token == '') {
             </div>
         </div>
     </main>
+    <section class="m-auto mt-4 text-center" style="max-width:400px;">
+        
+    <?php
+        if ($resultComentarios > 0) { ?>
+            <h3 class="mb-3">Comentarios</h3>
+            <?php
+            while ($dataComentarios = mysqli_fetch_array($queryComentarios)) {
+            ?>
+                <div class="container text-start p-3 mb-2" style="border:solid 1px black; border-radius:5px;">
+                    <h5>Cliente: <?php echo $dataComentarios["Cliente"] ?></h5>
+                    <p>
+                        Comentario: 
+                        <?php echo $dataComentarios["Comentario"]  ?>
+                    </p>
+                    <h6>Calificacion:  <?php echo $dataComentarios["Calificacion"]  ?></h6>
+                </div>
+            
+        <?php }
+        } else {
+            ?> <h3 class="mb-3">Este producto a un no tiene comentarios</h3>
+    <?php } ?>
+    <?php
+        if (empty($_SESSION["user_id"])){
+            echo 'Inicia Sesion para realizar un comentario';
+        } else { ?>
+            <div class="col-auto">
+                <a href="#" class="btn btn-primary" data-bs-id="<?php echo $id; ?>" data-bs-toggle="modal" data-bs-target="#ComentarioModal"><i class="bi bi-file-earmark-plus"></i>Agregar Comentario</a>
+            </div>
+        <?php } ?>
+    </section>
+
+    <?php include("../modulos/modalComentarios.php"); ?>
     
+    <!--==================== FOOTER ====================-->
+    <footer class="footer">
+        <div class="footer__bg">
+            <div class="footer__container container">
+                <div class="footer__socials">
+                    <a href="#" target="_blank" class="footer__social" title="Link a Facebook">
+                        <i class="uil uil-facebook-f"></i>
+                    </a>
+
+                    <a href="#" target="_blank" class="footer__social" title="Link a Instagran">
+                        <i class="uil uil-instagram"></i>
+                    </a>
+
+                    <a href="#" target="_blank" class="footer__social" title="Link a Twitter">
+                        <i class="uil uil-twitter"></i>
+                    </a>
+                </div>
+            </div>
+            <p class="footer__copy">&copy; Diseño Web Adaptable</p>
+        </div>
+    </footer>
+
     
 
     <script src="../assets/JS/index.js"></script>
@@ -168,6 +227,16 @@ if ($id == '' || $token == '') {
                 }
             })
         }
+
+        let comentarioModal = document.getElementById("ComentarioModal")
+        comentarioModal.addEventListener('shown.bs.modal', event => {
+            let button = event.relatedTarget
+            let id = button.getAttribute('data-bs-id')
+            comentarioModal.querySelector('.modal-body #id').value = id
+            console.log(id)
+        })
+
+        
     </script>
 </body>
 </html>

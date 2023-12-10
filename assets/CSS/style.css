@@ -132,6 +132,15 @@ tbody,th,td,tr,input {
     color: var(--title-color) !important;
 }
 
+textarea {
+    color: var(--title-color) !important;
+    outline: none !important;
+    background-color: var(--body-color) !important;
+}
+#calificacion {
+    background-color: #fff !important;
+}
+
 
 
 /*========== Button Dark/Light ==========*/
